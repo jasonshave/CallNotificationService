@@ -2,13 +2,22 @@
 // Licensed under the MIT License.
 
 using CallNotificationService.Domain.Models;
+using CallNotificationService.Persistence;
 
 namespace CallNotificationService.Domain.Services;
 
 internal class RegistrationService
 {
-    public CallbackRegistration Register(CallbackRegistration registration)
+    private readonly IRepository<CallbackRegistration> _repository;
+
+    public RegistrationService(IRepository<CallbackRegistration> repository)
     {
+        _repository = repository;
+    }
+
+    public async Task<CallbackRegistration> Register(CallbackRegistration registration)
+    {
+        await _repository.Save(registration);
         return registration;
     }
 }

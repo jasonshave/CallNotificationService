@@ -4,11 +4,13 @@
 using AutoFixture;
 using CallNotificationService.Domain.Models;
 using CallNotificationService.Domain.Services;
+using CallNotificationService.Persistence;
 using FluentAssertions;
+using Moq;
 
 namespace CallNotificationService.UnitTests
 {
-    public class RegistrationTests
+    public class RegistrationServiceTests
     {
         [Fact]
         public void Registration_Should_Create()
@@ -16,7 +18,10 @@ namespace CallNotificationService.UnitTests
             // arrange
             var fixture = new Fixture();
             var registration = fixture.Create<CallbackRegistration>();
-            var registrationService = new RegistrationService();
+            var mockRepository = new Mock<IRepository<CallbackRegistration>>();
+            mockRepository.Setup(x => x.Save(It.IsAny<CallbackRegistration>())
+
+            var registrationService = new RegistrationService(mockRepository.Object);
 
             // act
             var result = registrationService.Register(registration);
