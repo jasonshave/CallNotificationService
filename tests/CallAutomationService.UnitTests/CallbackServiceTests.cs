@@ -3,17 +3,10 @@
 
 using AutoFixture;
 using CallAutomation.Contracts;
-using CallNotificationService.Domain.Abstratctions.Interfaces;
+using CallNotificationService.Domain.Abstractions.Interfaces;
 using CallNotificationService.Domain.Models;
-using CallNotificationService.Domain.Services;
-using CallNotificationService.Persistence;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CallNotificationService.UnitTests
 {

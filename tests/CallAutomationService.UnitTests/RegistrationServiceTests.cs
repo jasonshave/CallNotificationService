@@ -19,7 +19,7 @@ namespace CallNotificationService.UnitTests
             var fixture = new Fixture();
             var registration = fixture.Create<CallbackRegistration>();
             var mockRepository = new Mock<IRepository<CallbackRegistration>>();
-            mockRepository.Setup(x => x.Save(It.IsAny<CallbackRegistration>())
+            mockRepository.Setup(x => x.SaveAsync(It.IsAny<CallbackRegistration>())
 
             var registrationService = new RegistrationService(mockRepository.Object);
 

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
