@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using CallAutomation.Contracts;
+using CallNotificationService.Domain.Abstractions.Interfaces;
 using CallNotificationService.Domain.Interfaces;
 
-namespace CallNotificationService.Domain.Services;
+namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 
 public class IncomingCallCallbackLocator : ICallbackLocator<IncomingCall>
 {

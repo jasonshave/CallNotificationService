@@ -17,7 +17,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Dispatcher\CallNotificationService.Dispatcher.csproj" />
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

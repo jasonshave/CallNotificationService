@@ -6,11 +6,10 @@
 
 using CallAutomation.Contracts;
 using CallNotificationService.Contracts.Models;
+using CallNotificationService.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using CallNotificationService.Domain.Interfaces;
-using CallNotificationService.Domain.Models;
 
 namespace CallNotificationService.App
 {
@@ -20,7 +19,7 @@ namespace CallNotificationService.App
         private readonly ILogger _logger;
 
         public IncomingCallFunction(
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             IPublisherService<IncomingCall, CallNotification> publisher)
         {
             _publisher = publisher;
@@ -40,9 +39,6 @@ namespace CallNotificationService.App
 
             _logger.LogInformation($"Publishing incoming call from {incomingCall.From.RawId}, to {incomingCall.To.RawId}. CorrelationId: {incomingCall.CorrelationId}");
             await _publisher.PublishAsync(incomingCall);
-
-            // todo: add this back when published
-            //incomingCall.ServerCallId = JsonSerializer.Deserialize<string>((JsonElement)eventGridIncomingCall.Data["serverCallId"]);
         }
     }
 }

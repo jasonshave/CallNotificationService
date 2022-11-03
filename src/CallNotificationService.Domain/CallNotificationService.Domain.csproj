@@ -13,11 +13,10 @@
 	<ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="12.0.0" />
 	  <PackageReference Include="Azure.Messaging.EventGrid" Version="4.11.0" />
-	  <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
-	  <PackageReference Include="Microsoft.Extensions.Http" Version="3.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
 	  <ProjectReference Include="..\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstractions.csproj" />
 	  <ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
 	</ItemGroup>

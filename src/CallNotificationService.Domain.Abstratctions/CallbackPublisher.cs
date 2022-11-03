@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 
 using CallNotificationService.Domain.Abstractions.Interfaces;
-using CallNotificationService.Domain.Interfaces;
 
-namespace CallNotificationService.Domain.Services
+namespace CallNotificationService.Domain.Abstractions
 {
     public class CallbackPublisher<TInput, TOutput> : IPublisherService<TInput, TOutput>
     {

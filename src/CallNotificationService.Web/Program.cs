@@ -5,6 +5,7 @@ using AutoMapper;
 using Azure.Messaging.EventGrid;
 using CallNotificationService.Contracts.Models;
 using CallNotificationService.Contracts.Requests;
+using CallNotificationService.Domain.Abstractions.Interfaces;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
 using CallNotificationService.Domain.Services;
