@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CallNotificationService.App": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7013",
+      "launchBrowser": false
+    }
+  }
+}

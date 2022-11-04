@@ -9,11 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Uni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{98F11E86-7BCA-43FE-ABF0-481B6BB26376}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Persistence", "CallNotificationService.Persistence\CallNotificationService.Persistence.csproj", "{D543EAED-26B8-4E8B-9304-61D9FF9C9840}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Domain.Abstractions", "src\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstractions.csproj", "{22B62EDD-6E54-424E-AE49-5AB43C20446E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.CosmosDb", "Infrastructure.CosmosDb\Infrastructure.CosmosDb.csproj", "{996CDB32-F5B4-4667-926F-E55E73D959B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.App", "src\CallNotificationService.App\CallNotificationService.App.csproj", "{62968D1A-B3C6-4377-BA35-B6E2AD4E87D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Domain.Abstratctions", "src\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstratctions.csproj", "{22B62EDD-6E54-424E-AE49-5AB43C20446E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Web", "src\CallNotificationService.Web\CallNotificationService.Web.csproj", "{1663B200-FE20-40C8-B949-0222131AC905}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Persistence", "src\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj", "{320A956F-422D-4DC4-8FCB-FD471AE7FB55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Contracts", "src\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj", "{E377E73A-FD1D-412D-92D7-2E784B09956A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Infrastructure.WebhookSender", "src\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj", "{0988CA02-7487-4123-9190-A19A2DDEC684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Dispatcher", "src\CallNotificationService.Dispatcher\CallNotificationService.Dispatcher.csproj", "{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,18 +37,34 @@ Global
 		{3925399F-63DA-4C29-B4B0-4CB04F33F383}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3925399F-63DA-4C29-B4B0-4CB04F33F383}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3925399F-63DA-4C29-B4B0-4CB04F33F383}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D543EAED-26B8-4E8B-9304-61D9FF9C9840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D543EAED-26B8-4E8B-9304-61D9FF9C9840}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D543EAED-26B8-4E8B-9304-61D9FF9C9840}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D543EAED-26B8-4E8B-9304-61D9FF9C9840}.Release|Any CPU.Build.0 = Release|Any CPU
-		{996CDB32-F5B4-4667-926F-E55E73D959B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{996CDB32-F5B4-4667-926F-E55E73D959B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{996CDB32-F5B4-4667-926F-E55E73D959B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{996CDB32-F5B4-4667-926F-E55E73D959B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22B62EDD-6E54-424E-AE49-5AB43C20446E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22B62EDD-6E54-424E-AE49-5AB43C20446E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B62EDD-6E54-424E-AE49-5AB43C20446E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B62EDD-6E54-424E-AE49-5AB43C20446E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62968D1A-B3C6-4377-BA35-B6E2AD4E87D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62968D1A-B3C6-4377-BA35-B6E2AD4E87D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62968D1A-B3C6-4377-BA35-B6E2AD4E87D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62968D1A-B3C6-4377-BA35-B6E2AD4E87D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1663B200-FE20-40C8-B949-0222131AC905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1663B200-FE20-40C8-B949-0222131AC905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1663B200-FE20-40C8-B949-0222131AC905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1663B200-FE20-40C8-B949-0222131AC905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{320A956F-422D-4DC4-8FCB-FD471AE7FB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320A956F-422D-4DC4-8FCB-FD471AE7FB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320A956F-422D-4DC4-8FCB-FD471AE7FB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320A956F-422D-4DC4-8FCB-FD471AE7FB55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E377E73A-FD1D-412D-92D7-2E784B09956A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E377E73A-FD1D-412D-92D7-2E784B09956A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E377E73A-FD1D-412D-92D7-2E784B09956A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E377E73A-FD1D-412D-92D7-2E784B09956A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0988CA02-7487-4123-9190-A19A2DDEC684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0988CA02-7487-4123-9190-A19A2DDEC684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0988CA02-7487-4123-9190-A19A2DDEC684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0988CA02-7487-4123-9190-A19A2DDEC684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Domain.Abstractions.Interfaces;
+namespace CallNotificationService.Contracts.Models;
 
-namespace CallNotificationService.Domain.Models;
-
-public class CallbackRegistration : IEntity
+public class CallbackRegistrationDto
 {
     public string Id { get; set; }
 
