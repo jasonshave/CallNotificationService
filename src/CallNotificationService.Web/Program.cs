@@ -9,13 +9,12 @@ using CallNotificationService.Domain.Abstractions.Interfaces;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
 using CallNotificationService.Domain.Services;
-using CallNotificationService.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
-builder.Services.AddSingleton(typeof(IRepository<>), typeof(InMemoryRepository<>));
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,7 +46,7 @@ app.MapPost("/api/registration", async (CreateRegistrationRequest request, IRegi
 
 app.MapGet("/api/registration/{id}", async (string id, IRegistrationService service, IMapper mapper) =>
 {
-    var result = await service.GetRegistration(id);
+    var result = await service.GetRegistration("ACS", id);
     var response = mapper.Map<CallbackRegistrationDto>(result);
     return Results.Ok(response);
 });

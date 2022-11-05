@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 using CallAutomation.Contracts;
-using CallNotificationService.Domain.Abstractions.Interfaces;
 using CallNotificationService.Domain.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
-namespace CallNotificationService.Infrastructure.WebhookSender.Services;
+namespace CallNotificationService.Domain.Services;
 
 public class IncomingCallCallbackLocator : ICallbackLocator<IncomingCall>
 {
@@ -19,7 +19,7 @@ public class IncomingCallCallbackLocator : ICallbackLocator<IncomingCall>
     public async Task<IEnumerable<Uri>> LocateCallbacks(IncomingCall input)
     {
         var callbacks = new List<Uri>();
-        var registrations = await _registrationService.ListRegistrationsByTarget(input.To.RawId);
+        var registrations = await _registrationService.ListRegistrationsByTarget("ACS", input.To.RawId);
         registrations.ToList().ForEach(x => callbacks.Add(new Uri(x.CallbackUri)));
 
         return callbacks;

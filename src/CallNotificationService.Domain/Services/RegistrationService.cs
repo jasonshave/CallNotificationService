@@ -3,32 +3,24 @@
 
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
-using CallNotificationService.Persistence;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Services;
 
 public class RegistrationService : IRegistrationService
 {
-    private readonly IRepository<CallbackRegistration> _repository;
+    private readonly ICrudRepository<CallbackRegistration> _repository;
 
-    public RegistrationService(IRepository<CallbackRegistration> repository)
+    public RegistrationService(ICrudRepository<CallbackRegistration> repository)
     {
         _repository = repository;
-        _repository.Save(new CallbackRegistration()
-        {
-            ApplicationId = Guid.NewGuid().ToString(),
-            CallbackUri = "https://myserver.com/abc",
-            Id = Guid.NewGuid().ToString(),
-            UpdatedOn = DateTimeOffset.UtcNow,
-            Targets = new List<string>() { "abc", "123" }
-        });
     }
 
-    public async Task<CallbackRegistration?> GetRegistration(string id)
+    public async Task<CallbackRegistration?> GetRegistration(string resourceId, string id)
     {
         try
         {
-            var result = await _repository.GetAsync(id);
+            var result = await _repository.Get(resourceId, id);
             return result;
         }
         catch (Exception e)
@@ -39,25 +31,25 @@ public class RegistrationService : IRegistrationService
 
     public async Task<CallbackRegistration> SetRegistrationAsync(CallbackRegistration registration)
     {
-        var result = await _repository.SaveAsync(registration);
+        var result = await _repository.Upsert(registration);
         return result;
     }
 
-    public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string callbackUri)
-    {
-        var results = await _repository.ListAsync();
-        return results.Where(x => x.CallbackUri == callbackUri);
-    }
+    //public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string resourceId, string callbackUri)
+    //{
+    //    var results = await _repository.List(resourceId, 100);
+    //    return results.Where(x => x.CallbackUri == callbackUri);
+    //}
 
-    public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string target)
+    public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string resourceId, string target)
     {
-        var results = await _repository.ListAsync();
+        var results = await _repository.List(resourceId, 100);
         return results.Where(x => x.Targets.Contains(target));
     }
 
-    public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string applicationId)
-    {
-        var results = await _repository.ListAsync();
-        return results.Where(x => x.ApplicationId.Contains(applicationId));
-    }
+    //public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string applicationId)
+    //{
+    //    var results = await _repository.ListAsync();
+    //    return results.Where(x => x.ApplicationId.Contains(applicationId));
+    //}
 }

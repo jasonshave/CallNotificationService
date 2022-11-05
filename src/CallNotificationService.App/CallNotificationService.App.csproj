@@ -4,22 +4,27 @@
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>    
+    <Nullable>enable</Nullable>
+    <UserSecretsId>96a7f503-bf39-4888-8875-f4b059817d11</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.3.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="3.2.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Dispatcher\CallNotificationService.Dispatcher.csproj" />
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -27,7 +32,6 @@
     </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

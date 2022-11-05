@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
-namespace CallNotificationService.Domain.Abstractions
+namespace CallNotificationService.Infrastructure.Domain.Abstractions
 {
     public class CallbackPublisher<TInput, TOutput> : IPublisherService<TInput, TOutput>
     {

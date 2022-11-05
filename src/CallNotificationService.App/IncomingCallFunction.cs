@@ -6,7 +6,7 @@
 
 using CallAutomation.Contracts;
 using CallNotificationService.Contracts.Models;
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;

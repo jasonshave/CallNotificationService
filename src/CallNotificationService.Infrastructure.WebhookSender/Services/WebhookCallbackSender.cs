@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 

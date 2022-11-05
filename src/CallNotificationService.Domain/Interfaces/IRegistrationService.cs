@@ -7,13 +7,13 @@ namespace CallNotificationService.Domain.Interfaces;
 
 public interface IRegistrationService
 {
-    Task<CallbackRegistration?> GetRegistration(string id);
+    Task<CallbackRegistration?> GetRegistration(string resourceId, string id);
 
     Task<CallbackRegistration> SetRegistrationAsync(CallbackRegistration registration);
 
-    Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string callbackUri);
+    //Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string callbackUri);
 
-    Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string target);
+    Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string resourceId, string target);
 
-    Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string applicationId);
+    //Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string applicationId);
 }

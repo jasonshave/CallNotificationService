@@ -3,7 +3,7 @@
 
 using CallAutomation.Contracts;
 using CallNotificationService.Contracts.Models;
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 

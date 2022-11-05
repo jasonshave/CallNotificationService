@@ -1,13 +1,15 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Models;
 
 public class CallbackRegistration : IEntity
 {
     public string Id { get; set; }
+
+    public string ResourceId => "ACS";
 
     public string ApplicationId { get; set; }
 
