@@ -17,4 +17,6 @@ public interface ICrudRepository<TDomainModel>
     Task<bool> CheckIfItemExists(string resourceId, string id, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<TDomainModel>> List(string resourceId, int pageSize, CancellationToken cancellationToken = default);
+
+    Task<bool> Delete(string resourceId, string id, IPreconditions? preconditions = null, CancellationToken cancellationToken = default);
 }

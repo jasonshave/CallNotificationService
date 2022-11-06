@@ -12,4 +12,6 @@ public class PersistedCallbackRegistration : BaseCosmosEntity
     public List<string> Targets { get; set; } = new();
 
     public string CallbackUri { get; set; }
+
+    public DateTimeOffset UpdatedOn { get; set; }
 }

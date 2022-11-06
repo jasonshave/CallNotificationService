@@ -7,9 +7,9 @@ using CallNotificationService.Persistence.Models;
 
 namespace CallNotificationService.Persistence.Profiles;
 
-public class TableStorageProfile : Profile
+public class PersistenceProfile : Profile
 {
-    public TableStorageProfile()
+    public PersistenceProfile()
     {
         CreateMap<CallbackRegistration, PersistedCallbackRegistration>().ReverseMap();
     }

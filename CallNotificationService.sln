@@ -17,13 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.WebhookSender", "src\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj", "{0988CA02-7487-4123-9190-A19A2DDEC684}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Dispatcher", "src\CallNotificationService.Dispatcher\CallNotificationService.Dispatcher.csproj", "{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Infrastructure.AzureTableStorage", "src\CallNotificationService.Infrastructure.AzureTableStorage\CallNotificationService.Infrastructure.AzureTableStorage.csproj", "{0F09008F-C5C7-4A6E-BD29-6A864CB09A16}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.Domain.Abstractions", "src\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj", "{F24029B4-F765-4EE0-A731-AF0836E03D48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Infrastructure.CosmosDb", "src\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj", "{64DD76F6-8278-4928-8049-4C07C495A21C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.CosmosDb", "src\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj", "{64DD76F6-8278-4928-8049-4C07C495A21C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +51,6 @@ Global
 		{0988CA02-7487-4123-9190-A19A2DDEC684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0988CA02-7487-4123-9190-A19A2DDEC684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0988CA02-7487-4123-9190-A19A2DDEC684}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DB94BB1-C8EE-4EEB-A45B-6257C60BD83E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F09008F-C5C7-4A6E-BD29-6A864CB09A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F09008F-C5C7-4A6E-BD29-6A864CB09A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F09008F-C5C7-4A6E-BD29-6A864CB09A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F09008F-C5C7-4A6E-BD29-6A864CB09A16}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F24029B4-F765-4EE0-A731-AF0836E03D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F24029B4-F765-4EE0-A731-AF0836E03D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F24029B4-F765-4EE0-A731-AF0836E03D48}.Release|Any CPU.ActiveCfg = Release|Any CPU

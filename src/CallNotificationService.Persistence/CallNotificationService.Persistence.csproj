@@ -13,13 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.AzureTableStorage\CallNotificationService.Infrastructure.AzureTableStorage.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Profiles\" />
   </ItemGroup>
 
 </Project>

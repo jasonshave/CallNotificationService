@@ -12,6 +12,6 @@ public class IncomingCallEventConverter : IEventConverter<IncomingCall, CallNoti
     public CallNotification Convert(IncomingCall input)
     {
         return new CallNotification(Guid.NewGuid().ToString(), input.From.RawId, input.To.RawId,
-            input.CallerDisplayName, input.CorrelationId);
+            input.CallerDisplayName, input.CorrelationId, input.IncomingCallContext);
     }
 }

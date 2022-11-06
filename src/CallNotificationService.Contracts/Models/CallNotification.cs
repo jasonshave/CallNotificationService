@@ -8,5 +8,6 @@ namespace CallNotificationService.Contracts.Models
         string From,
         string To,
         string? CallerDisplayName,
-        string CorrelationId);
+        string CorrelationId,
+        string IncomingCallContext);
 }

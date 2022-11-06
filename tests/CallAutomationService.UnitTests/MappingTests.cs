@@ -19,7 +19,7 @@ public class MappingTests
         // arrange
         var fixture = new Fixture();
         var callbackRegistration = fixture.Create<CallbackRegistration>();
-        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(typeof(TableStorageProfile)));
+        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(typeof(PersistenceProfile)));
         var mapper = mapperConfiguration.CreateMapper();
 
         // act
@@ -36,7 +36,7 @@ public class MappingTests
         // arrange
         var fixture = new Fixture();
         var callbackRegistration = fixture.Create<PersistedCallbackRegistration>();
-        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(typeof(TableStorageProfile)));
+        var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(typeof(PersistenceProfile)));
         var mapper = mapperConfiguration.CreateMapper();
 
         // act

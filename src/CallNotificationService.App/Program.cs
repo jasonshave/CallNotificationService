@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using Polly;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -33,8 +34,9 @@ var host = new HostBuilder()
         services.AddSingleton<ISender, WebhookCallbackSender>();
         services.AddSingleton<ICrudRepository<CallbackRegistration>, RegistrationRepository>();
 
-        services.AddAutoMapper(typeof(RestProfile), typeof(TableStorageProfile));
-        services.AddHttpClient();
+        services.AddAutoMapper(typeof(RestProfile), typeof(PersistenceProfile));
+        services.AddHttpClient<CallbackClient>()
+            .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
 
         services.AddCosmosDb(cfg => hostBuilder.Configuration.Bind(nameof(CosmosDbConfiguration), cfg));
     })

@@ -53,6 +53,47 @@ public class RegistrationFunctions
         return httpResponse;
     }
 
+    [Function("UpdateRegistration")]
+    public async Task<HttpResponseData> UpdateRegistration([HttpTrigger(AuthorizationLevel.Function, "put", Route = "registration/{id}")] HttpRequestData data, string id)
+    {
+        var request = JsonSerializer.Deserialize<UpdateRegistrationRequest>(data.Body, _serializerOptions);
+        if (request is null)
+        {
+            return data.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        var existingRegistration = await _service.GetRegistration("ACS", id);
+        if (existingRegistration is null)
+        {
+            return data.CreateResponse(HttpStatusCode.NotFound);
+        }
+
+        existingRegistration.Targets = request.Targets;
+        existingRegistration.CallbackUri = request.CallbackUri;
+
+        var result = await _service.SetRegistrationAsync(existingRegistration);
+        var response = _mapper.Map<CallbackRegistrationDto>(result);
+        var httpResponse = data.CreateResponse(HttpStatusCode.OK);
+        await httpResponse.WriteAsJsonAsync(response);
+        return httpResponse;
+    }
+
+    [Function("DeRegister")]
+    public async Task<HttpResponseData> DeRegister([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "registration/{id}")] HttpRequestData data, string id)
+    {
+        try
+        {
+            await _service.RemoveRegistration("ACS", id);
+        }
+        catch (Exception e)
+        {
+            var httpResponse = data.CreateResponse(HttpStatusCode.BadRequest);
+            return httpResponse;
+        }
+
+        return data.CreateResponse(HttpStatusCode.Accepted);
+    }
+
     [Function("GetRegistration")]
     public async Task<HttpResponseData> GetRegistration([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration/{id}")] HttpRequestData data, string? id)
     {
@@ -69,19 +110,19 @@ public class RegistrationFunctions
         return httpResponse;
     }
 
-    //[Function("ListRegistrationsByApplicationId")]
-    //public async Task<HttpResponseData> ListRegistrationsByApplicationId([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration/application/{applicationId}")] HttpRequestData data, string? applicationId)
-    //{
-    //    List<CallbackRegistrationDto> registrations = new();
-    //    var results = await _service.ListRegistrationsByApplicationId(applicationId);
-    //    foreach (var result in results)
-    //    {
-    //        var response = _mapper.Map<CallbackRegistrationDto>(result);
-    //        registrations.Add(response);
-    //    }
+    [Function("ListRegistrations")]
+    public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data, string? applicationId)
+    {
+        List<CallbackRegistrationDto> registrations = new();
+        var results = await _service.ListRegistrations("ACS");
+        foreach (var result in results)
+        {
+            var response = _mapper.Map<CallbackRegistrationDto>(result);
+            registrations.Add(response);
+        }
 
-    //    var httpResponse = data.CreateResponse(HttpStatusCode.OK);
-    //    await httpResponse.WriteAsJsonAsync(registrations);
-    //    return httpResponse;
-    //}
+        var httpResponse = data.CreateResponse(HttpStatusCode.OK);
+        await httpResponse.WriteAsJsonAsync(registrations);
+        return httpResponse;
+    }
 }

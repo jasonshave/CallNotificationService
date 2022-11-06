@@ -160,6 +160,36 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             return results.Select(r => _mapper.Map<TDomainModel>(r));
         }
 
+        public async Task<bool> Delete(string resourceId, string id, IPreconditions? preconditions = null, CancellationToken cancellationToken = default)
+        {
+            bool deleted;
+            try
+            {
+                var options = new ItemRequestOptions();
+                await ApplyConcurrencyHeaders(resourceId, id, preconditions, options);
+
+                await Container.DeleteItemAsync<TPersistedModel>(id, new PartitionKey(resourceId), options, cancellationToken).ConfigureAwait(false);
+                deleted = true;
+            }
+            catch (CosmosException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    deleted = false;
+                    return deleted;
+                }
+
+                throw TranslateCosmosException(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+
+            return deleted;
+        }
+
         protected virtual Exception TranslateCosmosException(CosmosException exception) => exception.StatusCode switch
         {
             HttpStatusCode.NotFound => new NotFoundException("The item was not found.", exception),

@@ -35,6 +35,11 @@ public class RegistrationService : IRegistrationService
         return result;
     }
 
+    public async Task RemoveRegistration(string resourceId, string id)
+    {
+        await _repository.Delete(resourceId, id);
+    }
+
     //public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string resourceId, string callbackUri)
     //{
     //    var results = await _repository.List(resourceId, 100);
@@ -47,9 +52,14 @@ public class RegistrationService : IRegistrationService
         return results.Where(x => x.Targets.Contains(target));
     }
 
-    //public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string applicationId)
-    //{
-    //    var results = await _repository.ListAsync();
-    //    return results.Where(x => x.ApplicationId.Contains(applicationId));
-    //}
+    public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string resourceId, string applicationId)
+    {
+        var results = await _repository.List(resourceId, 100);
+        return results.Where(x => x.ApplicationId == applicationId);
+    }
+
+    public async Task<IEnumerable<CallbackRegistration>> ListRegistrations(string resourceId)
+    {
+        return await _repository.List(resourceId, 100);
+    }
 }
