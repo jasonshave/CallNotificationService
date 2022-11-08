@@ -3,7 +3,13 @@
 
 namespace CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
-public interface IPublisherService<in TInput, out TOutput>
+public interface IRegistration
 {
-    Task PublishAsync(TInput data);
+    string ApplicationId { get; }
+
+    string[] Targets { get; }
+
+    string CallNotificationUri { get; }
+
+    string MidCallEventsUri { get; }
 }

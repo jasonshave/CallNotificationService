@@ -28,7 +28,10 @@ public class CosmosDbProvisioner : IStorageProvisioner
         var tasks = new List<Task>();
         foreach (var table in _configuration.Value.Tables)
         {
-            ContainerProperties props = new(table, @"/ResourceId");
+            ContainerProperties props = new(table.Key, @"/ResourceId")
+            {
+                DefaultTimeToLive = table.Value
+            };
             tasks.Add(_db.CreateContainerIfNotExistsAsync(props));
         }
 

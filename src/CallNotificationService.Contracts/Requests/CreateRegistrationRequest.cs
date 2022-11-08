@@ -5,9 +5,11 @@ namespace CallNotificationService.Contracts.Requests;
 
 public class CreateRegistrationRequest
 {
-    public string ApplicationId { get; init; }
+    public string ApplicationId { get; set; }
 
-    public List<string> Targets { get; set; }
+    public List<string> Targets { get; set; } = new();
 
-    public Uri CallbackUri { get; init; }
+    public string CallNotificationUri { get; set; }
+
+    public string MidCallEventsUri { get; set; }
 }

@@ -16,7 +16,7 @@ namespace CallNotificationService.App;
 
 public class RegistrationFunctions
 {
-    private readonly JsonSerializerOptions _serializerOptions = new()
+    private static readonly JsonSerializerOptions _serializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         PropertyNameCaseInsensitive = true
@@ -40,10 +40,11 @@ public class RegistrationFunctions
         var registration = new CallbackRegistration
         {
             ApplicationId = request.ApplicationId,
-            CallbackUri = request.CallbackUri.ToString(),
+            CallNotificationUri = request.CallNotificationUri,
+            MidCallEventsUri = request.MidCallEventsUri,
             UpdatedOn = DateTimeOffset.UtcNow,
-            Id = Guid.NewGuid().ToString(),
-            Targets = request.Targets,
+            Id = request.ApplicationId,
+            Targets = request.Targets.ToArray(),
         };
 
         var result = await _service.SetRegistrationAsync(registration);
@@ -69,7 +70,8 @@ public class RegistrationFunctions
         }
 
         existingRegistration.Targets = request.Targets;
-        existingRegistration.CallbackUri = request.CallbackUri;
+        existingRegistration.CallNotificationUri = request.CallNotificationUri;
+        existingRegistration.MidCallEventsUri = request.MidCallEventsUri;
 
         var result = await _service.SetRegistrationAsync(existingRegistration);
         var response = _mapper.Map<CallbackRegistrationDto>(result);

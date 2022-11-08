@@ -3,8 +3,8 @@
 
 namespace CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces
 {
-    public interface ISender
+    public interface ISender<in TInput>
     {
-        Task SendAsync<T>(T payload, Uri callbackUri);
+        Task SendAsync(TInput payload, Uri callbackUri, Uri midCallEventsUri);
     }
 }

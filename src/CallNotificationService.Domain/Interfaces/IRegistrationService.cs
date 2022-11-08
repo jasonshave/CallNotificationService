@@ -13,11 +13,9 @@ public interface IRegistrationService
 
     Task RemoveRegistration(string resourceId, string Id);
 
-    //Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string callbackUri);
-
     Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string resourceId, string target);
 
     Task<IEnumerable<CallbackRegistration>> ListRegistrationsByApplicationId(string resourceId, string applicationId);
-    
+
     Task<IEnumerable<CallbackRegistration>> ListRegistrations(string resourceId);
 }

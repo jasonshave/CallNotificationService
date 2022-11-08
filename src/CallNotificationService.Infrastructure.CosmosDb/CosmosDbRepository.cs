@@ -12,25 +12,30 @@ namespace CallNotificationService.Infrastructure.CosmosDb
 {
     public abstract class CosmosDbCrudRepository<TDomainModel, TPersistedModel> : ICrudRepository<TDomainModel>
         where TDomainModel : IEntity
+        where TPersistedModel : BaseCosmosEntity
     {
-        private readonly Lazy<Container> _container;
+        private readonly Lazy<Container> _lazyContainer;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private Database _db;
 
-        protected Container Container => _container.Value;
+        private Container Container => _lazyContainer.Value;
+        private int _containerTtl;
 
         protected abstract string ContainerId { get; }
 
         protected CosmosDbCrudRepository(
             Database db,
             IMapper mapper,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            int containerTtl = -1)
         {
             _db = db;
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger(GetType());
-            _container = new Lazy<Container>(() => _db.GetContainer(ContainerId));
+            _containerTtl = containerTtl;
+
+            _lazyContainer = new Lazy<Container>(() => _db.GetContainer(ContainerId));
         }
 
         public async Task<TDomainModel> Create(TDomainModel model, CancellationToken cancellationToken = default)
@@ -38,7 +43,7 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             try
             {
                 var persistedModel = _mapper.Map<TPersistedModel>(model);
-                var result = await Container.CreateItemAsync(persistedModel, new PartitionKey(model.Id), cancellationToken: cancellationToken)
+                var result = await Container.CreateItemAsync(persistedModel, new PartitionKey(model.ResourceId), cancellationToken: cancellationToken)
                     .ConfigureAwait(false);
 
                 return _mapper.Map<TDomainModel>(result.Resource);

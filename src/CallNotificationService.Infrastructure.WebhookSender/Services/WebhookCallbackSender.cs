@@ -4,10 +4,12 @@
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using CallNotificationService.Contracts.Models;
+using CallNotificationService.Domain.Models;
 
 namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 
-public class WebhookCallbackSender : ISender
+public class WebhookCallbackSender : ISender<Notification>
 {
     private readonly CallbackClient _client;
     private readonly ILogger<WebhookCallbackSender> _logger;
@@ -18,9 +20,17 @@ public class WebhookCallbackSender : ISender
         _logger = logger;
     }
 
-    public async Task SendAsync<T>(T payload, Uri callbackUri)
+    public async Task SendAsync(Notification notification, Uri callbackUri, Uri midCallEventsUri)
     {
-        _logger.LogInformation($"Sending payload {typeof(T).Name} to {callbackUri}");
+        var payload = new CallNotification()
+        {
+            Id = notification.Id,
+            To = notification.To,
+            From = notification.From,
+            CallerDisplayName = notification.CallerDisplayName,
+            CorrelationId = notification.CorrelationId,
+            MidCallEventsUri = midCallEventsUri.ToString()
+        };
         await _client.Client.PostAsJsonAsync(callbackUri, payload);
     }
 }

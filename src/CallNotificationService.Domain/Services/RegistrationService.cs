@@ -23,7 +23,7 @@ public class RegistrationService : IRegistrationService
             var result = await _repository.Get(resourceId, id);
             return result;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }
@@ -39,12 +39,6 @@ public class RegistrationService : IRegistrationService
     {
         await _repository.Delete(resourceId, id);
     }
-
-    //public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByCallbackUri(string resourceId, string callbackUri)
-    //{
-    //    var results = await _repository.List(resourceId, 100);
-    //    return results.Where(x => x.CallbackUri == callbackUri);
-    //}
 
     public async Task<IEnumerable<CallbackRegistration>> ListRegistrationsByTarget(string resourceId, string target)
     {

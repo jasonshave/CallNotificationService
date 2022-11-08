@@ -5,7 +5,7 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Models;
 
-public class CallbackRegistration : IEntity
+public class CallbackRegistration : IRegistration, IEntity
 {
     public string Id { get; set; }
 
@@ -13,9 +13,11 @@ public class CallbackRegistration : IEntity
 
     public string ApplicationId { get; set; }
 
-    public List<string> Targets { get; set; } = new();
+    public string[] Targets { get; set; }
 
-    public string CallbackUri { get; set; }
+    public string CallNotificationUri { get; set; }
+
+    public string MidCallEventsUri { get; set; }
 
     public DateTimeOffset UpdatedOn { get; set; }
 }

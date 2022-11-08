@@ -8,7 +8,7 @@ using CallNotificationService.Persistence.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
-namespace CallNotificationService.Persistence;
+namespace CallNotificationService.Persistence.Repositories;
 
 public class RegistrationRepository : CosmosDbCrudRepository<CallbackRegistration, PersistedCallbackRegistration>
 {

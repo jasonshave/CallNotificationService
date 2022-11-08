@@ -27,7 +27,7 @@ public class MappingTests
 
         // assert
         persistedRegistration.ApplicationId.Should().BeSameAs(callbackRegistration.ApplicationId);
-        persistedRegistration.CallbackUri.Should().BeSameAs(callbackRegistration.CallbackUri);
+        persistedRegistration.CallbackUri.Should().BeSameAs(callbackRegistration.CallNotificationUri);
     }
 
     [Fact]
@@ -44,6 +44,6 @@ public class MappingTests
 
         // assert
         persistedRegistration.ApplicationId.Should().BeSameAs(callbackRegistration.ApplicationId);
-        persistedRegistration.CallbackUri.Should().BeSameAs(callbackRegistration.CallbackUri);
+        persistedRegistration.CallNotificationUri.Should().BeSameAs(callbackRegistration.CallbackUri);
     }
 }

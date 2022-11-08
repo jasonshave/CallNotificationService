@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
-public interface ICallbackLocator<in TInput>
+public interface ICallbackLocator<in TInput, TOutput>
 {
-    Task<IEnumerable<Uri>> LocateCallbacks(TInput input);
+    Task<IEnumerable<TOutput>> GetCallbacksByTarget(TInput input);
 }

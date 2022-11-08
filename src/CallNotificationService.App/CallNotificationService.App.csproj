@@ -8,6 +8,7 @@
     <UserSecretsId>96a7f503-bf39-4888-8875-f4b059817d11</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Azure.Communication.CallAutomation" Version="1.0.0-beta.1" />
     <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="3.2.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />

@@ -9,5 +9,5 @@ public class CosmosDbConfiguration
 
     public string Database { get; init; }
 
-    public List<string> Tables { get; init; } = new();
+    public Dictionary<string, int> Tables { get; init; } = new();
 }

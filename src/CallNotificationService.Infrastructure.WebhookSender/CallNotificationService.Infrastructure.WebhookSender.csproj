@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
   </ItemGroup>
 
