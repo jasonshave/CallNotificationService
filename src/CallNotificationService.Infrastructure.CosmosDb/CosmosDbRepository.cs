@@ -14,35 +14,33 @@ namespace CallNotificationService.Infrastructure.CosmosDb
         where TDomainModel : IEntity
         where TPersistedModel : BaseCosmosEntity
     {
+        protected abstract string ContainerId { get; }
+
         private readonly Lazy<Container> _lazyContainer;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private Database _db;
 
         private Container Container => _lazyContainer.Value;
-        private int _containerTtl;
-
-        protected abstract string ContainerId { get; }
 
         protected CosmosDbCrudRepository(
             Database db,
             IMapper mapper,
-            ILoggerFactory loggerFactory,
-            int containerTtl = -1)
+            ILoggerFactory loggerFactory)
         {
             _db = db;
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger(GetType());
-            _containerTtl = containerTtl;
-
             _lazyContainer = new Lazy<Container>(() => _db.GetContainer(ContainerId));
         }
 
-        public async Task<TDomainModel> Create(TDomainModel model, CancellationToken cancellationToken = default)
+        public async Task<TDomainModel> Create(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default)
         {
             try
             {
                 var persistedModel = _mapper.Map<TPersistedModel>(model);
+                persistedModel.TimeToLiveInSeconds = ttlInSeconds;
+
                 var result = await Container.CreateItemAsync(persistedModel, new PartitionKey(model.ResourceId), cancellationToken: cancellationToken)
                     .ConfigureAwait(false);
 
@@ -102,8 +100,8 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             }
         }
 
-        public async Task<TDomainModel> Upsert(TDomainModel model, CancellationToken cancellationToken = default) =>
-            await Upsert(model, null, cancellationToken);
+        public async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default) =>
+            await Upsert(model, ttlInSeconds, null, cancellationToken);
 
         public async Task<bool> CheckIfItemExists(string resourceId, string id, CancellationToken cancellationToken = default)
         {
@@ -120,28 +118,6 @@ namespace CallNotificationService.Infrastructure.CosmosDb
                     return false;
                 }
 
-                throw TranslateCosmosException(ex);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-        }
-
-        public async Task<TDomainModel> Upsert(TDomainModel model, IPreconditions? preconditions = null, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var persistedModel = _mapper.Map<TPersistedModel>(model);
-                var options = new ItemRequestOptions();
-                await ApplyConcurrencyHeaders(model.ResourceId, model.Id, preconditions, options);
-                var result = await Container.UpsertItemAsync(persistedModel, new PartitionKey(model.ResourceId), options, cancellationToken: cancellationToken)
-                    .ConfigureAwait(false);
-                return _mapper.Map<TDomainModel>(result.Resource);
-            }
-            catch (CosmosException ex)
-            {
                 throw TranslateCosmosException(ex);
             }
             catch (Exception ex)
@@ -225,6 +201,29 @@ namespace CallNotificationService.Infrastructure.CosmosDb
                         throw new PreconditionFailedException();
                     requestOptions.IfMatchEtag = precheck.Headers.ETag;
                 }
+            }
+        }
+
+        private async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = -1, IPreconditions? preconditions = null, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var persistedModel = _mapper.Map<TPersistedModel>(model);
+                var options = new ItemRequestOptions();
+                persistedModel.TimeToLiveInSeconds = ttlInSeconds;
+                await ApplyConcurrencyHeaders(model.ResourceId, model.Id, preconditions, options);
+                var result = await Container.UpsertItemAsync(persistedModel, new PartitionKey(model.ResourceId), options, cancellationToken: cancellationToken)
+                    .ConfigureAwait(false);
+                return _mapper.Map<TDomainModel>(result.Resource);
+            }
+            catch (CosmosException ex)
+            {
+                throw TranslateCosmosException(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
             }
         }
     }

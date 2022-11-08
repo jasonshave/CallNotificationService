@@ -19,5 +19,9 @@ public class CallbackRegistration : IRegistration, IEntity
 
     public string MidCallEventsUri { get; set; }
 
+    public double LifetimeInMinutes { get; set; }
+
     public DateTimeOffset UpdatedOn { get; set; }
+
+    public DateTimeOffset ExpiresOn { get; set; }
 }

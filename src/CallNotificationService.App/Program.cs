@@ -16,6 +16,9 @@ using Microsoft.Extensions.Hosting;
 using Polly;
 using System.Reflection;
 using Azure.Communication.CallAutomation;
+using Azure.Communication.Identity;
+using CallNotificationService.Infrastructure.TokenService;
+using CallNotificationService.Infrastructure.AcsIdentity;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -28,6 +31,8 @@ var host = new HostBuilder()
         services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IRegistrationService, RegistrationService>();
         services.AddSingleton<ISender<Notification>, WebhookCallbackSender>();
+        services.AddSingleton<ITokenService, TokenService>();
+        services.AddSingleton<IApplicationIdentityService, AcsIdentityService>();
 
         services.AddSingleton<ICrudRepository<CallbackRegistration>, RegistrationRepository>();
         services.AddSingleton<ICrudRepository<Notification>, NotificationRepository>();
@@ -38,6 +43,9 @@ var host = new HostBuilder()
 
         services.AddCosmosDb(cfg => hostBuilder.Configuration.Bind(nameof(CosmosDbConfiguration), cfg));
         services.AddSingleton(new CallAutomationClient(hostBuilder.Configuration["ACS:ConnectionString"]));
+        services.AddSingleton(new CommunicationIdentityClient(hostBuilder.Configuration["ACS:ConnectionString"]));
+
+        services.Configure<TokenConfiguration>(hostBuilder.Configuration.GetSection(nameof(TokenConfiguration)));
     })
     .Build();
 

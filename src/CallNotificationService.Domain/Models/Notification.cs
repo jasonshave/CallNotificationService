@@ -17,6 +17,8 @@ public class Notification : IEntity
 
     public string CallerDisplayName { get; init; }
 
+    public string ApplicationId { get; init; }
+
     public string CorrelationId { get; init; }
 
     public string IncomingCallContext { get; init; }

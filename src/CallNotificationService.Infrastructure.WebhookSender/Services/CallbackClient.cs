@@ -5,10 +5,11 @@ namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 
 public sealed class CallbackClient
 {
-    public HttpClient Client { get; }
+    public HttpClient HttpClient { get; }
 
-    public CallbackClient(HttpClient client)
+    public CallbackClient(HttpClient httpClient)
     {
-        Client = client;
+        // set headers here
+        HttpClient = httpClient;
     }
 }

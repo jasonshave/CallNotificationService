@@ -6,13 +6,13 @@ namespace CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 public interface ICrudRepository<TDomainModel>
     where TDomainModel : IEntity
 {
-    Task<TDomainModel> Create(TDomainModel model, CancellationToken cancellationToken = default);
+    Task<TDomainModel> Create(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default);
 
     Task<TDomainModel> Get(string resourceId, string id, CancellationToken cancellationToken = default);
 
     Task<TDomainModel?> Find(string resourceId, string id, CancellationToken cancellationToken = default);
 
-    Task<TDomainModel> Upsert(TDomainModel model, CancellationToken cancellationToken = default);
+    Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default);
 
     Task<bool> CheckIfItemExists(string resourceId, string id, CancellationToken cancellationToken = default);
 

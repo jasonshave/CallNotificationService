@@ -31,7 +31,7 @@ public class RegistrationService : IRegistrationService
 
     public async Task<CallbackRegistration> SetRegistrationAsync(CallbackRegistration registration)
     {
-        var result = await _repository.Upsert(registration);
+        var result = await _repository.Upsert(registration, registration.LifetimeInMinutes * 60);
         return result;
     }
 

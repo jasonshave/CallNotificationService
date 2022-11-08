@@ -1,8 +1,6 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using AutoMapper;
-using Azure.Messaging.EventGrid.SystemEvents;
 using CallAutomation.Contracts;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
@@ -43,6 +41,7 @@ internal sealed class NotificationService : INotificationService
                 CallerDisplayName = incomingCall.CallerDisplayName,
                 IncomingCallContext = incomingCall.IncomingCallContext,
                 CorrelationId = incomingCall.CorrelationId,
+                ApplicationId = registration.ApplicationId,
                 MidCallEventsUri = registration.MidCallEventsUri
             };
 

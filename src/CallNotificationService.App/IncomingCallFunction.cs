@@ -45,7 +45,7 @@ namespace CallNotificationService.App
                 CorrelationId = JsonSerializer.Deserialize<string>((JsonElement)eventGridIncomingCall.Data["correlationId"])
             };
 
-            _logger.LogInformation($"Publishing incoming call from {incomingCall.From?.RawId}, to {incomingCall.To?.RawId}. CorrelationId: {incomingCall.CorrelationId}");
+            _logger.LogInformation($"Handling incoming call from {incomingCall.From?.RawId}, to {incomingCall.To?.RawId}. CorrelationId: {incomingCall.CorrelationId}");
             await _notificationService.Handle(incomingCall);
         }
 

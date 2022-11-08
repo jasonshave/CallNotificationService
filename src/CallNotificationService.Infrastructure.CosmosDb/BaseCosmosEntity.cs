@@ -12,6 +12,9 @@ public class BaseCosmosEntity
 
     public string ResourceId { get; init; }
 
+    [JsonProperty("ttl")]
+    public double TimeToLiveInSeconds { get; set; }
+
     [JsonProperty("_etag")]
     public string? ETag { get; init; }
 }

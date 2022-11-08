@@ -14,4 +14,6 @@ public class CallbackRegistrationDto
     public string MidCallEventsUri { get; set; }
 
     public DateTimeOffset UpdatedOn { get; set; }
+
+    public DateTimeOffset ExpiresOn { get; set; }
 }

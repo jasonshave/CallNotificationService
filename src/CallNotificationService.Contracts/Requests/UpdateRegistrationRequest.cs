@@ -5,6 +5,8 @@ namespace CallNotificationService.Contracts.Requests;
 
 public class UpdateRegistrationRequest
 {
+    public string ApplicationId { get; set; }
+
     public string[] Targets { get; set; }
 
     public string CallNotificationUri { get; set; }
