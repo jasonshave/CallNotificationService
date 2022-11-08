@@ -64,33 +64,6 @@ public class RegistrationFunctions
         return httpResponse;
     }
 
-    [Function("UpdateRegistration")]
-    public async Task<HttpResponseData> UpdateRegistration([HttpTrigger(AuthorizationLevel.Function, "put", Route = "registration/{id}")] HttpRequestData data, string id)
-    {
-        var request = JsonSerializer.Deserialize<UpdateRegistrationRequest>(data.Body, _serializerOptions);
-        if (request is null)
-        {
-            return data.CreateResponse(HttpStatusCode.BadRequest);
-        }
-
-        var existingRegistration = await _registrationService.GetRegistration("ACS", id);
-        if (existingRegistration is null)
-        {
-            return data.CreateResponse(HttpStatusCode.NotFound);
-        }
-
-        existingRegistration.Targets = request.Targets;
-        existingRegistration.ApplicationId = request.ApplicationId;
-        existingRegistration.CallNotificationUri = request.CallNotificationUri;
-        existingRegistration.MidCallEventsUri = request.MidCallEventsUri;
-
-        var result = await _registrationService.SetRegistrationAsync(existingRegistration);
-        var response = _mapper.Map<CallbackRegistrationDto>(result);
-        var httpResponse = data.CreateResponse(HttpStatusCode.OK);
-        await httpResponse.WriteAsJsonAsync(response);
-        return httpResponse;
-    }
-
     [Function("DeRegister")]
     public async Task<HttpResponseData> DeRegister([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "registration/{id}")] HttpRequestData data, string id)
     {
