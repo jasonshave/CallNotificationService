@@ -3,10 +3,20 @@
 
 namespace CallNotificationService.Contracts.Models
 {
-    public record CallNotification(
-        string Id,
-        string From,
-        string To,
-        string? CallerDisplayName,
-        string CorrelationId);
+    public class CallNotification
+    {
+        public string Id { get; init; }
+
+        public string From { get; init; }
+
+        public string To { get; init; }
+
+        public string? CallerDisplayName { get; init; }
+
+        public string ApplicationId { get; init; }
+
+        public string CorrelationId { get; init; }
+
+        public string MidCallEventsUri { get; init; }
+    }
 }

@@ -5,13 +5,15 @@ namespace CallNotificationService.Contracts.Models;
 
 public class CallbackRegistrationDto
 {
-    public string Id { get; set; }
-
     public string ApplicationId { get; set; }
 
-    public List<string> Targets { get; set; } = new();
+    public string[] Targets { get; set; }
 
-    public string CallbackUri { get; set; }
+    public string CallNotificationUri { get; set; }
+
+    public string MidCallEventsUri { get; set; }
 
     public DateTimeOffset UpdatedOn { get; set; }
+
+    public DateTimeOffset ExpiresOn { get; set; }
 }

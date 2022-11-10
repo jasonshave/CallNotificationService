@@ -1,28 +1,47 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Domain.Abstractions.Interfaces;
+using System.Net.Http.Headers;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using CallNotificationService.Contracts.Models;
+using CallNotificationService.Domain.Models;
+using CallNotificationService.Infrastructure.TokenService;
 
 namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 
-public class WebhookCallbackSender : ISender
+public class WebhookCallbackSender : ISender<Notification>
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ITokenService _tokenService;
+    private readonly CallbackClient _callbackClient;
     private readonly ILogger<WebhookCallbackSender> _logger;
 
-    public WebhookCallbackSender(IHttpClientFactory httpClientFactory, ILogger<WebhookCallbackSender> logger)
+    public WebhookCallbackSender(
+        ITokenService tokenService,
+        CallbackClient callbackClient,
+        ILogger<WebhookCallbackSender> logger)
     {
-        _httpClientFactory = httpClientFactory;
+        _tokenService = tokenService;
+        _callbackClient = callbackClient;
         _logger = logger;
     }
 
-    public async Task SendAsync<T>(T payload, Uri callbackUri)
+    public async Task SendAsync(Notification notification, Uri callbackUri, Uri midCallEventsUri)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var payload = new CallNotification()
+        {
+            Id = notification.Id,
+            To = notification.To,
+            From = notification.From,
+            CallerDisplayName = notification.CallerDisplayName,
+            ApplicationId = notification.ApplicationId,
+            CorrelationId = notification.CorrelationId,
+            MidCallEventsUri = midCallEventsUri.ToString()
+        };
 
-        _logger.LogInformation($"Sending payload {typeof(T).Name} to {callbackUri}");
-        await httpClient.PostAsJsonAsync(callbackUri, payload);
+        var token = _tokenService.GenerateToken(notification.ApplicationId);
+        _callbackClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        await _callbackClient.HttpClient.PostAsJsonAsync(callbackUri, payload);
     }
 }

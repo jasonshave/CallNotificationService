@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,23 +6,26 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Profiles\**" />
+    <EmbeddedResource Remove="Profiles\**" />
+    <None Remove="Profiles\**" />
+  </ItemGroup>
+
 	<ItemGroup>
         <InternalsVisibleTo Include="CallNotificationService.UnitTests" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="12.0.0" />
-	  <PackageReference Include="Azure.Messaging.EventGrid" Version="4.11.0" />
+	  
+	  <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
-	  <ProjectReference Include="..\CallNotificationService.Domain.Abstratctions\CallNotificationService.Domain.Abstractions.csproj" />
-	  <ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
+		<InternalsVisibleTo Include="CallNotificationService.App"/>
 	</ItemGroup>
-
 	<ItemGroup>
-	  <Folder Include="Interfaces\" />
-	  <Folder Include="Profiles\" />
+	  <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
 	</ItemGroup>
 </Project>
