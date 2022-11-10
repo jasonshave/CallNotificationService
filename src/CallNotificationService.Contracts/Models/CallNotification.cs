@@ -17,6 +17,8 @@ namespace CallNotificationService.Contracts.Models
 
         public string CorrelationId { get; init; }
 
+        public string? IncomingCallContext { get; set; }
+
         public string MidCallEventsUri { get; init; }
     }
 }

@@ -20,10 +20,12 @@
 	  <PackageReference Include="AutoMapper" Version="12.0.0" />
 	  
 	  <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
+	  
+	  <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="CallNotificationService.App"/>
+		<InternalsVisibleTo Include="CallNotificationService.App" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />

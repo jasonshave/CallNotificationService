@@ -13,7 +13,7 @@ public class BaseCosmosEntity
     public string ResourceId { get; init; }
 
     [JsonProperty("ttl")]
-    public double TimeToLiveInSeconds { get; set; }
+    public double TimeToLiveInSeconds { get; set; } = -1;
 
     [JsonProperty("_etag")]
     public string? ETag { get; init; }

@@ -6,12 +6,12 @@ using CallNotificationService.Contracts.Models;
 using CallNotificationService.Contracts.Requests;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
-using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.App;
 

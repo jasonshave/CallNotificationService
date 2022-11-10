@@ -5,20 +5,24 @@ using CallAutomation.Contracts;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace CallNotificationService.Domain.Services;
 
 internal sealed class NotificationService : INotificationService
 {
+    private readonly IOptionsMonitor<NotificationSettings> _notificationSettings;
     private readonly IRegistrationService _registrationService;
     private readonly ICrudRepository<Notification> _repository;
     private readonly ISender<Notification> _sender;
 
     public NotificationService(
+        IOptionsMonitor<NotificationSettings> notificationSettings,
         IRegistrationService registrationService,
         ICrudRepository<Notification> repository,
         ISender<Notification> sender)
     {
+        _notificationSettings = notificationSettings;
         _registrationService = registrationService;
         _repository = repository;
         _sender = sender;
@@ -46,8 +50,9 @@ internal sealed class NotificationService : INotificationService
             };
 
             // save notification
-            await _repository.Create(notification);
+            await _repository.Create(notification, _notificationSettings.CurrentValue.TimeToLiveInSeconds);
 
+            // send notification
             await _sender.SendAsync(notification, new Uri(registration.CallNotificationUri), new Uri(registration.MidCallEventsUri));
         }
     }
