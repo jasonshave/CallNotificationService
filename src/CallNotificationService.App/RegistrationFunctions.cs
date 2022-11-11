@@ -6,12 +6,12 @@ using CallNotificationService.Contracts.Models;
 using CallNotificationService.Contracts.Requests;
 using CallNotificationService.Domain.Interfaces;
 using CallNotificationService.Domain.Models;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
-using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.App;
 
@@ -45,7 +45,7 @@ public class RegistrationFunctions
     {
         var request = JsonSerializer.Deserialize<CreateRegistrationRequest>(data.Body, _serializerOptions);
         var applicationId = request?.ApplicationId ?? await _applicationIdentityService.GenerateIdentityAsync();
-        var registration = new CallbackRegistration
+        var registration = new Registration
         {
             Id = applicationId,
             Targets = request.Targets.ToArray(),
@@ -58,7 +58,7 @@ public class RegistrationFunctions
         };
 
         var result = await _registrationService.SetRegistrationAsync(registration);
-        var response = _mapper.Map<CallbackRegistrationDto>(result);
+        var response = _mapper.Map<CallbackRegistration>(result);
         var httpResponse = data.CreateResponse(HttpStatusCode.OK);
         await httpResponse.WriteAsJsonAsync(response);
         return httpResponse;
@@ -84,7 +84,7 @@ public class RegistrationFunctions
     public async Task<HttpResponseData> GetRegistration([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration/{id}")] HttpRequestData data, string? id)
     {
         var result = await _registrationService.GetRegistration("ACS", id);
-        var response = _mapper.Map<CallbackRegistrationDto>(result);
+        var response = _mapper.Map<CallbackRegistration>(result);
         if (response is null)
         {
             var notFoundResponse = data.CreateResponse(HttpStatusCode.NotFound);
@@ -99,11 +99,11 @@ public class RegistrationFunctions
     [Function("ListRegistrations")]
     public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data, string? applicationId)
     {
-        List<CallbackRegistrationDto> registrations = new();
+        List<CallbackRegistration> registrations = new();
         var results = await _registrationService.ListRegistrations("ACS");
         foreach (var result in results)
         {
-            var response = _mapper.Map<CallbackRegistrationDto>(result);
+            var response = _mapper.Map<CallbackRegistration>(result);
             registrations.Add(response);
         }
 

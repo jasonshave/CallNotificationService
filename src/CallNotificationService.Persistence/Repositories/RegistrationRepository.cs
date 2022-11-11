@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CallNotificationService.Persistence.Repositories;
 
-public class RegistrationRepository : CosmosDbCrudRepository<CallbackRegistration, PersistedCallbackRegistration>
+public class RegistrationRepository : CosmosDbCrudRepository<Registration, PersistedCallbackRegistration>
 {
     protected override string ContainerId => "CallbackRegistrations";
 

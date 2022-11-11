@@ -4,16 +4,16 @@
 // Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
 
-using System.Net;
+using Azure;
+using Azure.Communication.CallAutomation;
 using CallAutomation.Contracts;
 using CallNotificationService.App.Models;
 using CallNotificationService.Domain.Interfaces;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using Azure;
-using Azure.Communication.CallAutomation;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Text.Json;
 
 namespace CallNotificationService.App
 {

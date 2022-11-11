@@ -18,7 +18,7 @@ public class MappingTests
     {
         // arrange
         var fixture = new Fixture();
-        var callbackRegistration = fixture.Create<CallbackRegistration>();
+        var callbackRegistration = fixture.Create<Registration>();
         var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(typeof(PersistenceProfile)));
         var mapper = mapperConfiguration.CreateMapper();
 
@@ -40,7 +40,7 @@ public class MappingTests
         var mapper = mapperConfiguration.CreateMapper();
 
         // act
-        var persistedRegistration = mapper.Map<CallbackRegistration>(callbackRegistration);
+        var persistedRegistration = mapper.Map<Registration>(callbackRegistration);
 
         // assert
         persistedRegistration.ApplicationId.Should().BeSameAs(callbackRegistration.ApplicationId);

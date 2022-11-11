@@ -1,10 +1,16 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-namespace CallNotificationService.Contracts.Models;
+using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
-public class CallbackRegistrationDto
+namespace CallNotificationService.Domain.Models;
+
+public sealed class Registration : IRegistration, IEntity
 {
+    public string Id { get; set; }
+
+    public string ResourceId => "ACS";
+
     public string ApplicationId { get; set; }
 
     public string[] Targets { get; set; }
@@ -12,6 +18,8 @@ public class CallbackRegistrationDto
     public string CallNotificationUri { get; set; }
 
     public string MidCallEventsUri { get; set; }
+
+    public double LifetimeInMinutes { get; set; }
 
     public DateTimeOffset UpdatedOn { get; set; }
 

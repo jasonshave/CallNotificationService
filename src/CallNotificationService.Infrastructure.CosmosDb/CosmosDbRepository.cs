@@ -34,12 +34,13 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             _lazyContainer = new Lazy<Container>(() => _db.GetContainer(ContainerId));
         }
 
-        public async Task<TDomainModel> Create(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default)
+        public async Task<TDomainModel> Create(TDomainModel model, double ttlInSeconds = default, CancellationToken cancellationToken = default)
         {
             try
             {
                 var persistedModel = _mapper.Map<TPersistedModel>(model);
-                persistedModel.TimeToLiveInSeconds = ttlInSeconds;
+                if (ttlInSeconds > 0)
+                    persistedModel.TimeToLiveInSeconds = ttlInSeconds;
 
                 var result = await Container.CreateItemAsync(persistedModel, new PartitionKey(model.ResourceId), cancellationToken: cancellationToken)
                     .ConfigureAwait(false);
@@ -100,7 +101,7 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             }
         }
 
-        public async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = -1, CancellationToken cancellationToken = default) =>
+        public async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = default, CancellationToken cancellationToken = default) =>
             await Upsert(model, ttlInSeconds, null, cancellationToken);
 
         public async Task<bool> CheckIfItemExists(string resourceId, string id, CancellationToken cancellationToken = default)
@@ -204,13 +205,15 @@ namespace CallNotificationService.Infrastructure.CosmosDb
             }
         }
 
-        private async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = -1, IPreconditions? preconditions = null, CancellationToken cancellationToken = default)
+        private async Task<TDomainModel> Upsert(TDomainModel model, double ttlInSeconds = default, IPreconditions? preconditions = null, CancellationToken cancellationToken = default)
         {
             try
             {
                 var persistedModel = _mapper.Map<TPersistedModel>(model);
+                if (ttlInSeconds > 0)
+                    persistedModel.TimeToLiveInSeconds = ttlInSeconds;
+
                 var options = new ItemRequestOptions();
-                persistedModel.TimeToLiveInSeconds = ttlInSeconds;
                 await ApplyConcurrencyHeaders(model.ResourceId, model.Id, preconditions, options);
                 var result = await Container.UpsertItemAsync(persistedModel, new PartitionKey(model.ResourceId), options, cancellationToken: cancellationToken)
                     .ConfigureAwait(false);

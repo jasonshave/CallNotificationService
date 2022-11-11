@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
-public class CosmosDbConfiguration
+public sealed class CosmosDbConfiguration
 {
     public string ConnectionString { get; init; }
 

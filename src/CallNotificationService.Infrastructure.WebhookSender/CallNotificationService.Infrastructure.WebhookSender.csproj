@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,16 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
+	<ItemGroup>
+        <InternalsVisibleTo Include="CallNotificationService.App" />
+	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\srv\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
