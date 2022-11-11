@@ -1,36 +1,23 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-
 namespace CallNotificationService.Client
 {
-    public sealed class CallNotificationClient
+    internal sealed class CallNotificationClient : ICallNotificationClient
     {
+        private readonly CallNotificationHttpClient _client;
         private readonly CallNotificationClientSettings _callNotificationClientSettings;
 
-        public CallNotificationClient(Action<CallNotificationClientSettings> options)
+        public CallNotificationClient(
+            CallNotificationHttpClient client,
+            CallNotificationClientSettings callNotificationClientSettings)
         {
-            var settings = new CallNotificationClientSettings();
-            options(settings);
-            _callNotificationClientSettings = settings;
-        }
-
-        public CallNotificationClient(CallNotificationClientSettings settings)
-        {
-            _callNotificationClientSettings = settings;
-        }
-
-        public CallNotificationClient(IConfiguration configuration)
-        {
-            var settings = new CallNotificationClientSettings();
-            configuration.Bind(nameof(CallNotificationClientSettings), settings);
-            _callNotificationClientSettings = settings;
+            _client = client;
+            _callNotificationClientSettings = callNotificationClientSettings;
         }
 
         /// <summary>
-        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CreateRegistrationRequest"/>
+        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CreateRegistration"/>
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -40,19 +27,7 @@ namespace CallNotificationService.Client
             var request = new CreateRegistration();
             options(request);
 
-            using var httpClient = new HttpClient();
-            var httpRequest = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri)
-            };
-            httpRequest.Content = new StringContent(JsonSerializer.Serialize(request));
-            var response = await httpClient.SendAsync(httpRequest);
-            if (!response.IsSuccessStatusCode) throw new ApplicationException(response.ReasonPhrase);
-
-            var stream = await response.Content.ReadAsStreamAsync();
-            var registration = await JsonSerializer.DeserializeAsync<CallbackRegistration>(stream);
-            return registration;
+            return await _client.Post<CreateRegistration, CallbackRegistration>(request, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));
         }
 
         /// <summary>
@@ -62,14 +37,8 @@ namespace CallNotificationService.Client
         /// <returns></returns>
         public async Task<bool> DeRegister(string applicationId)
         {
-            using var httpClient = new HttpClient();
-            var httpRequest = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri(_callNotificationClientSettings.DeRegisterEndpointUri)
-            };
-            var response = await httpClient.SendAsync(httpRequest);
-            return response.IsSuccessStatusCode;
+            var uri = string.Format(_callNotificationClientSettings.DeRegisterEndpointUri, applicationId);
+            return await _client.Delete(new Uri(uri));
         }
 
         /// <summary>
@@ -80,18 +49,9 @@ namespace CallNotificationService.Client
         /// <exception cref="ApplicationException"></exception>
         public async Task<CallbackRegistration?> GetRegistration(string applicationId)
         {
-            using var httpClient = new HttpClient();
-            var httpRequest = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(_callNotificationClientSettings.GetRegistrationEndpointUri)
-            };
-            var response = await httpClient.SendAsync(httpRequest);
-            if (!response.IsSuccessStatusCode) throw new ApplicationException(response.ReasonPhrase);
-
-            var stream = await response.Content.ReadAsStreamAsync();
-            var registration = await JsonSerializer.DeserializeAsync<CallbackRegistration>(stream);
-            return registration;
+            var uri = string.Format(_callNotificationClientSettings.GetRegistrationEndpointUri, applicationId);
+            return await _client.Get<CallbackRegistration>(
+                new Uri(uri));
         }
 
         /// <summary>
@@ -101,18 +61,10 @@ namespace CallNotificationService.Client
         /// <exception cref="ApplicationException"></exception>
         public async Task<IEnumerable<CallbackRegistration>> ListRegistrations()
         {
-            using var httpClient = new HttpClient();
-            var httpRequest = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(_callNotificationClientSettings.ListRegistrationsEndpointUri)
-            };
-            var response = await httpClient.SendAsync(httpRequest);
-            if (!response.IsSuccessStatusCode) throw new ApplicationException(response.ReasonPhrase);
+            var result = await _client.Get<IEnumerable<CallbackRegistration>>(new Uri(_callNotificationClientSettings
+                .ListRegistrationsEndpointUri));
 
-            var stream = await response.Content.ReadAsStreamAsync();
-            var registrations = await JsonSerializer.DeserializeAsync<IEnumerable<CallbackRegistration>>(stream);
-            return registrations ?? Enumerable.Empty<CallbackRegistration>();
+            return result ?? Enumerable.Empty<CallbackRegistration>();
         }
     }
 }

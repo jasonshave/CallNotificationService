@@ -5,11 +5,11 @@ namespace CallNotificationService.Client;
 
 public sealed class CallNotificationClientSettings
 {
-    public string SetRegistrationEndpointUri { get; set; }
+    public string SetRegistrationEndpointUri { get; set; } = string.Empty;
 
-    public string DeRegisterEndpointUri { get; set; }
+    public string DeRegisterEndpointUri { get; set; } = string.Empty;
 
-    public string GetRegistrationEndpointUri { get; set; }
+    public string GetRegistrationEndpointUri { get; set; } = string.Empty;
 
-    public string ListRegistrationsEndpointUri { get; set; }
+    public string ListRegistrationsEndpointUri { get; set; } = string.Empty;
 }
