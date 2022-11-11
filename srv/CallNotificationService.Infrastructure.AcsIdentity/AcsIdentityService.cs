@@ -7,7 +7,7 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Infrastructure.AcsIdentity
 {
-    public class AcsIdentityService : IApplicationIdentityService
+    public sealed class AcsIdentityService : IApplicationIdentityService
     {
         private readonly CommunicationIdentityClient _identityClient;
 

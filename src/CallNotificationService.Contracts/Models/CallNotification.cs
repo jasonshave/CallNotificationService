@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Contracts.Models
 {
-    public class CallNotification
+    public sealed class CallNotification
     {
         public string Id { get; init; }
 

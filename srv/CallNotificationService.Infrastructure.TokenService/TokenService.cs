@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CallNotificationService.Infrastructure.TokenService
 {
-    public class TokenService : ITokenService
+    public sealed class TokenService : ITokenService
     {
         private readonly ILogger<TokenService> _logger;
         private readonly TokenConfiguration _tokenConfiguration;

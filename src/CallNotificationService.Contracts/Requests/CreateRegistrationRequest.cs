@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Contracts.Requests;
 
-public class CreateRegistrationRequest
+public sealed class CreateRegistrationRequest
 {
     public string? ApplicationId { get; set; }
 

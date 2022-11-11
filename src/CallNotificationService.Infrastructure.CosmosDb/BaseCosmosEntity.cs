@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
-public class BaseCosmosEntity
+public abstract class BaseCosmosEntity
 {
     [JsonProperty("id")]
     public string Id { get; init; }

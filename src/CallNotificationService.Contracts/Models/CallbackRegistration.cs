@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Contracts.Models;
 
-public class CallbackRegistrationDto
+public sealed class CallbackRegistration
 {
     public string ApplicationId { get; set; }
 

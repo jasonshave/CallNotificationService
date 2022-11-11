@@ -11,6 +11,6 @@ public class RestProfile : Profile
 {
     public RestProfile()
     {
-        CreateMap<CallbackRegistration, CallbackRegistrationDto>();
+        CreateMap<Registration, CallbackRegistration>();
     }
 }

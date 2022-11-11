@@ -5,7 +5,7 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Models;
 
-public class Notification : IEntity
+public sealed class Notification : IEntity
 {
     public string Id { get; init; }
 

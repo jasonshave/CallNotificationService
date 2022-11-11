@@ -11,7 +11,7 @@ public class PersistenceProfile : Profile
 {
     public PersistenceProfile()
     {
-        CreateMap<CallbackRegistration, PersistedCallbackRegistration>().ReverseMap();
+        CreateMap<Registration, PersistedCallbackRegistration>().ReverseMap();
         CreateMap<Notification, PersistedNotification>().ReverseMap();
     }
 }

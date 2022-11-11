@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 
-public class WebhookCallbackSender : ISender<Notification>
+internal sealed class WebhookCallbackSender : ISender<Notification>
 {
     private readonly IOptionsMonitor<NotificationSettings> _notificationSettings;
     private readonly ITokenService _tokenService;

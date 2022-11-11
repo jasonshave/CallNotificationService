@@ -34,7 +34,7 @@ var host = new HostBuilder()
         services.AddSingleton<ITokenService, TokenService>();
         services.AddSingleton<IApplicationIdentityService, AcsIdentityService>();
 
-        services.AddSingleton<ICrudRepository<CallbackRegistration>, RegistrationRepository>();
+        services.AddSingleton<ICrudRepository<Registration>, RegistrationRepository>();
         services.AddSingleton<ICrudRepository<Notification>, NotificationRepository>();
 
         services.AddAutoMapper(typeof(RestProfile), typeof(PersistenceProfile));

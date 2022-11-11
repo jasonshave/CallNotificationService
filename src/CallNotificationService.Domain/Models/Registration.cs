@@ -5,7 +5,7 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Models;
 
-public class CallbackRegistration : IRegistration, IEntity
+public sealed class Registration : IRegistration, IEntity
 {
     public string Id { get; set; }
 

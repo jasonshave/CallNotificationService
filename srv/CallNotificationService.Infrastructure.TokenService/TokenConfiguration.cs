@@ -3,7 +3,7 @@
 
 namespace CallNotificationService.Infrastructure.TokenService;
 
-public class TokenConfiguration
+public sealed class TokenConfiguration
 {
     public string Secret { get; init; }
 

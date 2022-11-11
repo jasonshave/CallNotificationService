@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
-public class CosmosDbProvisioner : IStorageProvisioner
+public sealed class CosmosDbProvisioner : IStorageProvisioner
 {
     private readonly IOptions<CosmosDbConfiguration> _configuration;
     private readonly Database _db;
