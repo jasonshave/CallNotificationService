@@ -1,13 +1,13 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Contracts.Models;
 using CallNotificationService.Domain.Models;
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
+using CallAutomation.Contracts;
 
 namespace CallNotificationService.Infrastructure.WebhookSender.Services;
 

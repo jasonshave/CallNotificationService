@@ -4,9 +4,9 @@
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using JWT.Algorithms;
 using JWT.Builder;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace CallNotificationService.Infrastructure.TokenService
 {

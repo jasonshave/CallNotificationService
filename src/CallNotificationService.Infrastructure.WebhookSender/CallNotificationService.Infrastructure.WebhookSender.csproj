@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CallAutomation.Contracts" Version="1.0.8" />
+    <PackageReference Include="CallAutomation.Contracts" Version="1.0.9" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
   </ItemGroup>
 
 	<ItemGroup>
-        <InternalsVisibleTo Include="CallNotificationService.App"/>
+        <InternalsVisibleTo Include="CallNotificationService.App" />
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\srv\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />

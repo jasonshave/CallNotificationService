@@ -1,10 +1,8 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
-using CallNotificationService.Contracts.Models;
-using CallNotificationService.Contracts.Requests;
-using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace CallNotificationService.Client
 {
@@ -37,9 +35,9 @@ namespace CallNotificationService.Client
         /// <param name="options"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistration(Action<CreateRegistrationRequest> options)
+        public async Task<CallbackRegistration?> SetRegistration(Action<CreateRegistration> options)
         {
-            var request = new CreateRegistrationRequest();
+            var request = new CreateRegistration();
             options(request);
 
             using var httpClient = new HttpClient();
