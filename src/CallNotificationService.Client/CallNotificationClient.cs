@@ -1,33 +1,62 @@
 ﻿// Copyright (c) 2022 Jason Shave. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
+
 namespace CallNotificationService.Client
 {
     internal sealed class CallNotificationClient : ICallNotificationClient
     {
         private readonly CallNotificationHttpClient _client;
         private readonly CallNotificationClientSettings _callNotificationClientSettings;
+        private readonly ILogger<CallNotificationClient> _logger;
 
         public CallNotificationClient(
             CallNotificationHttpClient client,
-            CallNotificationClientSettings callNotificationClientSettings)
+            CallNotificationClientSettings callNotificationClientSettings,
+            ILogger<CallNotificationClient> logger)
         {
             _client = client;
             _callNotificationClientSettings = callNotificationClientSettings;
+            _logger = logger;
         }
 
         /// <summary>
-        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CreateRegistration"/>
+        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallbackRegistrationSettings"/>
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistration(Action<CreateRegistration> options)
+        public async Task<CallbackRegistration?> SetRegistration(Action<CallbackRegistrationSettings> options)
         {
-            var request = new CreateRegistration();
+            var request = new CallbackRegistrationSettings();
             options(request);
 
-            return await _client.Post<CreateRegistration, CallbackRegistration>(request, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));
+            return await SetRegistration(request);
+        }
+
+        /// <summary>
+        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallbackRegistrationSettings"/>
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
+        public async Task<CallbackRegistration?> SetRegistration(CallbackRegistrationSettings request)
+        {
+            var createRegistrationRequest = new CreateRegistrationRequest()
+            {
+                ApplicationId = request.ApplicationId,
+                CallNotificationUri = request.CallbackHost + request.CallNotificationPath,
+                MidCallEventsUri = request.CallbackHost + request.MidCallEventsPath,
+                LifetimeInMinutes = request.LifetimeInMinutes,
+                Targets = request.RegisteredTargets
+            };
+
+            var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));
+
+            _logger.LogInformation($"Registered WebHook callback {registration.CallNotificationUri} using application {registration.ApplicationId} which expires on {registration.ExpiresOn.ToLocalTime()}.");
+
+            return registration;
         }
 
         /// <summary>
@@ -38,7 +67,17 @@ namespace CallNotificationService.Client
         public async Task<bool> DeRegister(string applicationId)
         {
             var uri = string.Format(_callNotificationClientSettings.DeRegisterEndpointUri, applicationId);
-            return await _client.Delete(new Uri(uri));
+            var isSuccess = await _client.Delete(new Uri(uri));
+            if (isSuccess)
+            {
+                _logger.LogInformation($"Removed WebHook callback registration for application {applicationId}.");
+            }
+            else
+            {
+                _logger.LogError($"There was a problem removing the WebHook callback registration for application {applicationId}.");
+            }
+
+            return isSuccess;
         }
 
         /// <summary>

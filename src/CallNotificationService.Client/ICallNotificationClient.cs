@@ -5,7 +5,9 @@ namespace CallNotificationService.Client;
 
 public interface ICallNotificationClient
 {
-    Task<CallbackRegistration?> SetRegistration(Action<CreateRegistration> options);
+    Task<CallbackRegistration?> SetRegistration(Action<CallbackRegistrationSettings> options);
+
+    Task<CallbackRegistration?> SetRegistration(CallbackRegistrationSettings options);
 
     Task<bool> DeRegister(string applicationId);
 
