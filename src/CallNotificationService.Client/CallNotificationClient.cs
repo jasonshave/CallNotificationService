@@ -27,12 +27,12 @@ namespace CallNotificationService.Client
         /// <param name="options"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistration(Action<CallbackRegistrationSettings> options)
+        public async Task<CallbackRegistration?> SetRegistrationAsync(Action<CallbackRegistrationSettings> options)
         {
             var request = new CallbackRegistrationSettings();
             options(request);
 
-            return await SetRegistration(request);
+            return await SetRegistrationAsync(request);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace CallNotificationService.Client
         /// <param name="options"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistration(CallbackRegistrationSettings request)
+        public async Task<CallbackRegistration?> SetRegistrationAsync(CallbackRegistrationSettings request)
         {
             var createRegistrationRequest = new CreateRegistrationRequest()
             {
