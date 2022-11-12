@@ -35,9 +35,9 @@ internal sealed class RegistrationService : IRegistrationService
         return result;
     }
 
-    public async Task RemoveRegistration(string resourceId, string id)
+    public async Task<bool> RemoveRegistration(string resourceId, string id)
     {
-        await _repository.Delete(resourceId, id);
+        return await _repository.Delete(resourceId, id);
     }
 
     public async Task<IEnumerable<Registration>> ListRegistrationsByTarget(string resourceId, string target)

@@ -69,15 +69,19 @@ public class RegistrationFunctions
     {
         try
         {
-            await _registrationService.RemoveRegistration("ACS", id);
+            var result = await _registrationService.RemoveRegistration("ACS", id);
+            if (result)
+                return data.CreateResponse(HttpStatusCode.OK);
+
+            var response = data.CreateResponse(HttpStatusCode.BadRequest);
+            await response.WriteStringAsync($"Unable to de-register {id}");
+            return response;
         }
         catch (Exception e)
         {
             var httpResponse = data.CreateResponse(HttpStatusCode.BadRequest);
             return httpResponse;
         }
-
-        return data.CreateResponse(HttpStatusCode.Accepted);
     }
 
     [Function("GetRegistration")]

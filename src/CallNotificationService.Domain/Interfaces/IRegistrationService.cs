@@ -11,7 +11,7 @@ public interface IRegistrationService
 
     Task<Registration> SetRegistrationAsync(Registration registration);
 
-    Task RemoveRegistration(string resourceId, string Id);
+    Task<bool> RemoveRegistration(string resourceId, string Id);
 
     Task<IEnumerable<Registration>> ListRegistrationsByTarget(string resourceId, string target);
 
