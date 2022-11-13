@@ -170,3 +170,5 @@ public class Sample
     }
 }
 ```
+
+> NOTE: The environment variable obtained from the `VS_TUNNEL_URL` tag contains a trailing slash `/`. In the above example, be sure to handle the case where your `CallbackHost` has been configured in your application's settings rather than from the environment variable and adjust your callback paths to remove the `/` and add it to the host name otherwise you will have an invalid double slash: `https://myserver.com//api/callbacks` path.
