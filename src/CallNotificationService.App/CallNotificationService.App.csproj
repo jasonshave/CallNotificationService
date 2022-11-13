@@ -19,12 +19,12 @@
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\srv\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj" />
-    <ProjectReference Include="..\..\srv\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />
     <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj" />
     <ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
   </ItemGroup>
