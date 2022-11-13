@@ -77,11 +77,40 @@ Once the Call Notification Service has been deployed, configure the following se
 
 ## CallNotification schema
 
-| 
+| Property | Purpose | Example |
+| -- | -- | -- |
+| Id | Identifies the unique `CallNotification` payload | `5ffba0c8-f9ee-4a01-ad64-e2ca80930ec4` |
+| From | String value representing the caller | `4:+18005551212` |
+| To | String representing the called target | `4:+18669876543` or `8:acs:d8f7dce6-b60a-48d8-aa2e-c317b20b3fe9_704702a4-3651-4f08-9e60-7f136ac614b4` |
+| CallerDisplayName | Nullable value showing the caller's name | Contoso |
+| ApplicationId | The application ID used during registration | `8:acs:d8f7dce6-b60a-48d8-aa2e-c317b20b3fe9_704702a4-3651-4f08-9e60-7f136ac614b4` |
+| CorrelationId | The ID used correlate all call events in Call Automation | 02dc8864-97de-4f53-9e97-132ce29f5bfa |
+| IncomingCallContext | Nullable value for the call context used to answer, reject, or redirect a call | Note: excluded due to length |
+| MidCallEventsUri | The full URI specified during registration to receive mid-call event callbacks. Helpful to reduce stateful registration requirement. | `https://myserver.com/api/callbacks` |
 
 ## Call Notification Service Client
 
 The Call Notification Service Client library can be used like an SDK to provide a convenience layer when interacting with your deployed Call Notification Service instance. Additionally, this library is best used with the [CallAutomation.Extensions package on NuGet](https://www.nuget.org/packages/CallAutomation.Extensions/) making it easier to invoke actions and correlate callbacks to previous actions.
+
+### Client configuration
+
+The Call Notification Service uses an Azure Function with **Function code** authorization which means you need to obtain the function URL for each API. To do this, navigate to your deployed function, click on at least the `Register` function to obtain the URL.
+
+![Get Function](/images/function-url-1.png)
+
+Then copy the function URL and save it to be used in the client configuration settings.
+![Copy Function UR>](/images/function-url-2.png)
+
+#### CallNotificationClientSettings
+
+```json
+  "CallNotificationClientSettings": {
+    "SetRegistrationEndpointUri": "[register-function-url]",
+    "DeRegisterEndpointUri": "[deregister-function-url]",
+    "GetRegistrationEndpointUri": "[getregistration-function-url]",
+    "ListRegistrationsEndpointUri": "[listregistrations-function-url]"
+  },
+```
 
 ### Callback registration
 
