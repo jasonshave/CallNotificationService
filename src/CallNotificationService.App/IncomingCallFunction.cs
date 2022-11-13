@@ -1,4 +1,5 @@
 // Copyright (c) 2022 Jason Shave. All rights reserved.
+// Copyright (c) 2022 Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 // Default URL for triggering event grid function in the local environment.
