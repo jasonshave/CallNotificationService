@@ -20,13 +20,13 @@ This library contains the deployable Call Notification Service (CNS) and a clien
 ## How does it work?
 
 1. Using the Call Notification Service Client, register your webhook callback on startup. This saves your registration to Cosmos DB and sets the document to expire based on the time frame chosen during registration.
-2. When an `IncomingCall` event is sent to Event Grid from ACS the following steps are performed:
+2. When an `IncomingCall` event is sent to Event Grid from ACS, the following steps are performed:
 
    - Lookup callback registrations based on the "to" field of the call.
    - For each registration, transform the `IncomingCall` to a `CallNotification` type making sure to obey the flag to send the `IncomingCallContext` or not.
      - Save the notification to Cosmos DB with an automatic expiration of the data (configurable).
-     - Send one notification to each registration using the webhook callback URI.
-     - If an error occurs, retry 3 times with a 600ms time window between each request (configurable).
+     - Send one notification to each host registered using the webhook callback URI constructed by setting the `CallbackHost` and `CallNotificationPath` in the client library.
+     - If an error occurs, retry 3 times with a 600ms delay (configurable).
 
    ![CNS Overview](/images/cns-overview.png)
 
