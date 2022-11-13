@@ -1,5 +1,7 @@
 # Call Notification Service
 
+[![.NET](https://github.com/jasonshave/CallNotificationService/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jasonshave/CallNotificationService/actions/workflows/dotnet.yml)
+
 This library contains the deployable Call Notification Service (CNS) and a client library which can manage webhook callback registrations and dispatch inbound call notifications from the Azure Communication Services (ACS) Call Automation platform. CNS builds on how the Call Automation platform sends inbound call notifications to Event Grid by allowing dynamic registration of your webhook endpoint and the phone numbers or ACS endpoints at runtime.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjasonshave%2FCallNotificationService%2Fmaster%2Fdeployment%2Fdeploy-to-azure.json%3Ftoken%3DGHSAT0AAAAAAB27NMTHVT2LE6LEJYW7JGMMY3QJ2QA)
@@ -73,21 +75,25 @@ Once the Call Notification Service has been deployed, configure the following se
 }
 ```
 
+## CallNotification schema
+
+| 
+
 ## Call Notification Service Client
 
 The Call Notification Service Client library can be used like an SDK to provide a convenience layer when interacting with your deployed Call Notification Service instance. Additionally, this library is best used with the [CallAutomation.Extensions package on NuGet](https://www.nuget.org/packages/CallAutomation.Extensions/) making it easier to invoke actions and correlate callbacks to previous actions.
 
 ### Callback registration
 
-Usually during startup, your application will register with CNS and supply the targets it wants to subscribe to. For example, you may identify your application using an [ACS acquired identity](https://learn.microsoft.com/en-us/azure/communication-services/concepts/identity-model) and a phone number you've purchased through the Azure portal. In this case you want your application to be notified when an inbound call arrives for either the application identity or the phone number so it can take action such as answering, rejecting, or redirecting the call.
+Usually during startup, your application will register with CNS and supply the targets it wants to subscribe to. For example, you may identify your application using an [ACS acquired identity](https://learn.microsoft.com/azure/communication-services/concepts/identity-model) and a phone number you've purchased through the Azure portal. In this case you want your application to be notified when an inbound call arrives for either the application identity or the phone number so it can take action such as answering, rejecting, or redirecting the call.
 
 ```csharp
 var settings = new CallbackRegistrationSettings()
 {
     ApplicationId = configuration["ACS:ApplicationId"],
     CallbackHost = configuration["VS_TUNNEL_URL"],
-    CallNotificationPath = "/api/callNotification",
-    MidCallEventsPath = "/api/callbacks",
+    CallNotificationPath = "api/callNotification",
+    MidCallEventsPath = "api/callbacks",
     LifetimeInMinutes = 30,
     Targets = { "4:+18005551212", "4:+18669876543" }
 };
@@ -149,24 +155,22 @@ public class RegistrationWorker : BackgroundService
 
 ## Visual Studio Dev Tunnels
 
-Th [Dev Tunnels feature](https://learn.microsoft.com/en-us/connectors/custom-connectors/port-tunneling) released in Visual Studio 17.4.0 which allows for a dynamic public endpoint FQDN for easier development of web endpoints. The tunnel FQDN is also available at runtime through an [Environment Variable](https://devblogs.microsoft.com/visualstudio/introducing-private-preview-port-tunneling-visual-studio-for-asp-net-core-projects/#environment-variable-to-get-the-dev-tunnel-url) which allows you to remove any reference to a fixed public domain name in your application.
+Th [Dev Tunnels feature](https://learn.microsoft.com/connectors/custom-connectors/port-tunneling) released in Visual Studio 17.4.0 which allows for a dynamic public endpoint FQDN for easier development of web endpoints. The tunnel FQDN is also available at runtime through an [Environment Variable](https://devblogs.microsoft.com/visualstudio/introducing-private-preview-port-tunneling-visual-studio-for-asp-net-core-projects/#environment-variable-to-get-the-dev-tunnel-url) which allows you to remove any reference to a fixed public domain name in your application.
 
-The primary benefit to using this feature is that you don't need 3rd party tools like NGROK to do rapid development and testing on your local machine.
+The primary benefit to using this feature is that you don't need 3rd party tools like NGROK to do rapid development and testing on your local machine. This feature, combined with the Call Notification Service's ability to dynamically register your webhook callback means you don't have to worry about changing anything in ACS or Event Grid.
 
 >NOTE: From the **Tools, Options** menu in Visual Studio, search for `Tunnel` and locate the **Dev Tunnels, General** section. You may need to sign in with an Outlook or corporate account for this feature to work during public preview in addition to enabling the feature in the **Preview features** section.
 
-### Loading your hostname dynamically
+### Loading the hostname dynamically
 
 ```csharp
 public class Sample
 {
-    private readonly IOptionsMonitor<CallbackRegistrationSettings> _settings;
-
     public Sample(
         IConfiguration configuration,
         IOptionsMonitor<CallbackRegistrationSettings> settings)
     {
-        _settings.CurrentValue.CallbackHost = configuration["VS_TUNNEL_URL"] ?? _settings.CurrentValue.CallbackHost;        
+        settings.CurrentValue.CallbackHost = configuration["VS_TUNNEL_URL"] ?? settings.CurrentValue.CallbackHost;
     }
 }
 ```
