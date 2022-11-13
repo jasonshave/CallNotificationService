@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.CosmosDb", "src\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj", "{64DD76F6-8278-4928-8049-4C07C495A21C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.AcsIdentity", "srv\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj", "{32A00A5F-080F-48F7-B4DB-085F3050A52D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.AcsIdentity", "src\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj", "{32A00A5F-080F-48F7-B4DB-085F3050A52D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.TokenService", "srv\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj", "{F1D9E7C9-C2F3-4AE5-A66E-42D3B3374BBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.TokenService", "src\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj", "{F1D9E7C9-C2F3-4AE5-A66E-42D3B3374BBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Client", "src\CallNotificationService.Client\CallNotificationService.Client.csproj", "{ECF4B61A-DF5D-4415-934F-9A199F6F0BB1}"
 EndProject
