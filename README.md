@@ -106,8 +106,8 @@ The example above shows the `ApplicationId` setting coming from the `configurati
 | -- | -- | -- |
 | ApplicationId | This can be obtained using the ACS Identity blade in the Azure portal, you can use the ACS Identity SDK, or leave it blank in which the Call Notification Service will automatically generate an ID for you. | `8:acs:63454d3e-3fd6-4e9a-817b-e80314a2b271_066fa785-71dd-4201-91fd-cb4f59c9aa7f` |
 | CallbackHost | This is your public FQDN representing your web application managing calls using the Call Automation SDK. | https://myserver.com |
-| CallNotificationPath | The path used to receive the `CallNotification` payload. | `/api/CallNotification` |
-| MidCallEventsPath | The path used to receive `CloudEvent[]` envelopes containing the multitude of events from the Call Automation platform. | `/api/callbacks` |
+| CallNotificationPath | The path used to receive the `CallNotification` payload. | `api/CallNotification` |
+| MidCallEventsPath | The path used to receive `CloudEvent[]` envelopes containing the multitude of events from the Call Automation platform. | `api/callbacks` |
 | LifetimeInMinutes | A `double` representing the number of minutes before your registration automatically expires. | `30` |
 | Targets | A `List<string>` containing the ACS `rawId` the Call Notification Service should send you notifications for. This can be a number or an ACS identity, similar to the application ID mentioned above. | `{ "4:+18005551212", "4:+18669876543", configuration["ACS:ApplicationId"] }`
 
