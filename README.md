@@ -92,6 +92,26 @@ Once the Call Notification Service has been deployed, configure the following se
 
 The Call Notification Service Client library can be used like an SDK to provide a convenience layer when interacting with your deployed Call Notification Service instance. Additionally, this library is best used with the [CallAutomation.Extensions package on NuGet](https://www.nuget.org/packages/CallAutomation.Extensions/) making it easier to invoke actions and correlate callbacks to previous actions.
 
+### Client configuration
+
+The Call Notification Service uses an Azure Function with **Function code** authorization which means you need to obtain the function URL for each API. To do this, navigate to your deployed function, click on at least the `Register` function to obtain the URL.
+
+![Get Function](/images/function-url-1.png)
+
+Then copy the function URL and save it to be used in the client configuration settings.
+![Copy Function UR>](/images/function-url-2.png)
+
+#### CallNotificationClientSettings
+
+```json
+  "CallNotificationClientSettings": {
+    "SetRegistrationEndpointUri": "[register-function-url]",
+    "DeRegisterEndpointUri": "[deregister-function-url]",
+    "GetRegistrationEndpointUri": "[getregistration-function-url]",
+    "ListRegistrationsEndpointUri": "[listregistrations-function-url]"
+  },
+```
+
 ### Callback registration
 
 Usually during startup, your application will register with CNS and supply the targets it wants to subscribe to. For example, you may identify your application using an [ACS acquired identity](https://learn.microsoft.com/azure/communication-services/concepts/identity-model) and a phone number you've purchased through the Azure portal. In this case you want your application to be notified when an inbound call arrives for either the application identity or the phone number so it can take action such as answering, rejecting, or redirecting the call.
