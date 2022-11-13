@@ -136,7 +136,7 @@ public class RegistrationWorker : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            // registration uses dynamic settings from IOptionsMonitor<CallbackRegistrationSettings>
+            // use dynamic settings from IOptionsMonitor<CallbackRegistrationSettings>
             _registration = await _client.SetRegistrationAsync(_settings.CurrentValue);
 
             // pause then renew.
