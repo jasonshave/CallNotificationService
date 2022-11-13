@@ -1,0 +1,103 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"functionAppName": {
+			"type": "string"
+		},
+        "hostingPlanName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ]
+        },
+		"storageAccountName": {
+			"type": "string"
+		}
+    },
+	"resources": [
+		{
+			"type": "Microsoft.Web/serverfarms",
+			"apiVersion": "2022-03-01",
+			"name": "[parameters('hostingPlanName')]",
+			"location": "[resourceGroup().location]",
+			"sku": {
+			"name": "Y1",
+			"tier": "Dynamic",
+			"size": "Y1",
+			"family": "Y",
+			"capacity": 0
+			},
+			"properties": {
+				"computeMode": "Dynamic"
+			}
+		},
+		{
+			"type": "Microsoft.Web/sites",
+			"apiVersion": "2022-03-01",
+			"name": "[parameters('functionAppName')]",
+			"location": "[resourceGroup().location]",
+			"kind": "functionapp",
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+				"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+			],
+			"properties": {
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+				"siteConfig": {
+					"appSettings": [
+					{
+						"name": "AzureWebJobsStorage",
+						"value": "[format('DefaultEndpointsProtocol=https;AccountName={0};EndpointSuffix={1};AccountKey={2}', parameters('storageAccountName'), environment().suffixes.storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-09-01').keys[0].value)]"
+					},
+					{
+						"name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+						"value": "[format('DefaultEndpointsProtocol=https;AccountName={0};EndpointSuffix={1};AccountKey={2}', parameters('storageAccountName'), environment().suffixes.storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-09-01').keys[0].value)]"
+					},
+					{
+						"name": "WEBSITE_CONTENTSHARE",
+						"value": "[toLower(parameters('functionAppName'))]"
+					},
+					{
+						"name": "FUNCTIONS_EXTENSION_VERSION",
+						"value": "~4"
+					},
+					{
+						"name": "FUNCTIONS_WORKER_RUNTIME",
+						"value": "node"
+					},
+					{
+						"name": "WEBSITE_NODE_DEFAULT_VERSION",
+						"value": "~14"
+					}
+					]
+				}
+			}
+		},
+		{
+			"type": "Microsoft.Storage/storageAccounts",
+			"apiVersion": "2021-09-01",
+			"name": "[parameters('storageAccountName')]",
+			"location": "[resourceGroup().location]",
+			"kind": "StorageV2",
+			"properties": {
+				"allowBlobPublicAccess": false
+			},
+			"sku": {
+				"name": "[parameters('storageAccountType')]"
+			}
+		}
+	],
+    "variables": {
+
+    }
+}
