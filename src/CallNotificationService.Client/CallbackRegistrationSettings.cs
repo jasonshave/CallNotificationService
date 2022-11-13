@@ -13,7 +13,7 @@ public sealed class CallbackRegistrationSettings
 
     public double LifetimeInMinutes { get; set; }
 
-    public List<string> RegisteredTargets { get; set; } = new();
+    public List<string> Targets { get; set; } = new();
 
     public string CallNotificationPath { get; set; } = string.Empty;
 

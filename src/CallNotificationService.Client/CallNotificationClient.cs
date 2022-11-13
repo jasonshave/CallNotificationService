@@ -49,7 +49,7 @@ namespace CallNotificationService.Client
                 CallNotificationUri = request.CallbackHost + request.CallNotificationPath,
                 MidCallEventsUri = request.CallbackHost + request.MidCallEventsPath,
                 LifetimeInMinutes = request.LifetimeInMinutes,
-                Targets = request.RegisteredTargets
+                Targets = request.Targets
             };
 
             var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));

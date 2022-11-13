@@ -89,9 +89,84 @@ var settings = new CallbackRegistrationSettings()
     CallNotificationPath = "/api/callNotification",
     MidCallEventsPath = "/api/callbacks",
     LifetimeInMinutes = 30,
-    RegisteredTargets = { "4:+18005551212", "4:+18669876543" }
+    Targets = { "4:+18005551212", "4:+18669876543" }
 };
 CallbackRegistration registration = await client.SetRegistrationAsync(settings);
 ```
 
-The example above shows the `ApplicationId` setting coming from the `configuration` variable which is an implementation of `IConfiguration` likely injected in the constructor. It also shows the `CallbackHost` being set by the new [Dev Tunnels feature](https://learn.microsoft.com/en-us/connectors/custom-connectors/port-tunneling) released in Visual Studio 17.4.0 which allows for a dynamic public endpoint FQDN for easier development of web endpoints. Lastly, it shows the registration will last for 30 minutes before expiring and deliver `CallNotification` payloads for two PSTN phone numbers.
+The example above shows the `ApplicationId` setting coming from the `configuration` variable which is an implementation of `IConfiguration` likely injected in the constructor. Lastly, it shows the registration will last for 30 minutes before expiring and deliver `CallNotification` payloads for two PSTN phone numbers.
+
+| Setting | Purpose | Example |
+| -- | -- | -- |
+| ApplicationId | This can be obtained using the ACS Identity blade in the Azure portal, you can use the ACS Identity SDK, or leave it blank in which the Call Notification Service will automatically generate an ID for you. | `8:acs:63454d3e-3fd6-4e9a-817b-e80314a2b271_066fa785-71dd-4201-91fd-cb4f59c9aa7f` |
+| CallbackHost | This is your public FQDN representing your web application managing calls using the Call Automation SDK. | https://myserver.com |
+| CallNotificationPath | The path used to receive the `CallNotification` payload. | `/api/CallNotification` |
+| MidCallEventsPath | The path used to receive `CloudEvent[]` envelopes containing the multitude of events from the Call Automation platform. | `/api/callbacks` |
+| LifetimeInMinutes | A `double` representing the number of minutes before your registration automatically expires. | `30` |
+| Targets | A `List<string>` containing the ACS `rawId` the Call Notification Service should send you notifications for. This can be a number or an ACS identity, similar to the application ID mentioned above. | `{ "4:+18005551212", "4:+18669876543", configuration["ACS:ApplicationId"] }`
+
+### Dynamic configuration
+
+Leveraging the `IOptionsMonitor<T>` interface in [ASP.NET](https://learn.microsoft.com/aspnet/core/fundamentals/configuration/options?view=aspnetcore-7.0), you can store your configuration parameters in either the [User Secrets store in .NET](https://learn.microsoft.com/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows) or load them from another configuration provider. You also choose to split the configuration so that the host and path information comes from one provider, and the number management configuration from an external service responsible for that task.
+
+```csharp
+public class RegistrationWorker : BackgroundService
+{
+    // use the options monitor to load settings dynamically
+    private readonly IOptionsMonitor<CallbackRegistrationSettings> _settings;
+    private readonly ICallNotificationClient _client;
+
+    private CallbackRegistration? _registration;
+
+    public RegistrationWorker(
+        IOptionsMonitor<CallbackRegistrationSettings> settings,
+        ICallNotificationClient client)
+    {
+        _settings = settings;
+        _client = client;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            // registration uses dynamic settings from IOptionsMonitor<CallbackRegistrationSettings>
+            _registration = await _client.SetRegistrationAsync(_settings.CurrentValue);
+
+            // pause then renew.
+            await Task.Delay(TimeSpan.FromMinutes(_settings.CurrentValue.LifetimeInMinutes / 1.2), stoppingToken);
+        }
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        // optional: remove registration upon graceful shutdown
+        await _client.DeRegister(_registration.ApplicationId);
+        await base.StopAsync(cancellationToken);
+    }
+}
+```
+
+## Visual Studio Dev Tunnels
+
+Th [Dev Tunnels feature](https://learn.microsoft.com/en-us/connectors/custom-connectors/port-tunneling) released in Visual Studio 17.4.0 which allows for a dynamic public endpoint FQDN for easier development of web endpoints. The tunnel FQDN is also available at runtime through an [Environment Variable](https://devblogs.microsoft.com/visualstudio/introducing-private-preview-port-tunneling-visual-studio-for-asp-net-core-projects/#environment-variable-to-get-the-dev-tunnel-url) which allows you to remove any reference to a fixed public domain name in your application.
+
+The primary benefit to using this feature is that you don't need 3rd party tools like NGROK to do rapid development and testing on your local machine.
+
+>NOTE: From the **Tools, Options** menu in Visual Studio, search for `Tunnel` and locate the **Dev Tunnels, General** section. You may need to sign in with an Outlook or corporate account for this feature to work during public preview in addition to enabling the feature in the **Preview features** section.
+
+### Loading your hostname dynamically
+
+```csharp
+public class Sample
+{
+    private readonly IOptionsMonitor<CallbackRegistrationSettings> _settings;
+
+    public Sample(
+        IConfiguration configuration,
+        IOptionsMonitor<CallbackRegistrationSettings> settings)
+    {
+        _settings.CurrentValue.CallbackHost = configuration["VS_TUNNEL_URL"] ?? _settings.CurrentValue.CallbackHost;        
+    }
+}
+```
