@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="CallNotificationService.App" />
+		<InternalsVisibleTo Include="CallNotificationService.UnitTests"/>
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />

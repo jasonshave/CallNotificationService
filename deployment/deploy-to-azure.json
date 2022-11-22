@@ -5,22 +5,10 @@
 		"functionAppName": {
 			"type": "string"
 		},
-        "hostingPlanName": {
-            "type": "string",
-            "minLength": 1
-        },
-        "storageAccountType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_ZRS",
-                "Standard_GRS",
-                "Standard_RAGRS",
-                "Premium_LRS"
-            ]
-        },
 		"storageAccountName": {
+			"type": "string"
+		},
+		"cosmosDbDatabaseName": {
 			"type": "string"
 		}
     },
@@ -28,7 +16,7 @@
 		{
 			"type": "Microsoft.Web/serverfarms",
 			"apiVersion": "2022-03-01",
-			"name": "[parameters('hostingPlanName')]",
+			"name": "[variables('hostingPlanName')]",
 			"location": "[resourceGroup().location]",
 			"sku": {
 			"name": "Y1",
@@ -48,11 +36,11 @@
 			"location": "[resourceGroup().location]",
 			"kind": "functionapp",
 			"dependsOn": [
-				"[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+				"[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
 				"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
 			],
 			"properties": {
-				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
 				"siteConfig": {
 					"appSettings": [
 					{
@@ -78,6 +66,42 @@
 					{
 						"name": "WEBSITE_NODE_DEFAULT_VERSION",
 						"value": "~14"
+					},
+					{
+						"name": "ACS:ConnectionString",
+						"value": ""
+					},
+					{
+						"name": "CosmosDbConfiguration:ConnectionString",
+						"value": ""
+					},
+					{
+						"name": "CosmosDbConfiguration:Database",
+						"value": "[parameters('cosmosDbDatabaseName')]"
+					},
+					{
+						"name": "CosmosDbConfiguration:Database:Tables",
+						"value": "{ \"CallbackRegistrations\": -1, \"CallNotifications\": 35 }"
+					},
+					{
+						"name": "TokenConfiguration:Issuer",
+						"value": ""
+					},
+					{
+						"name": "TokenConfiguration:Secret",
+						"value": ""
+					},
+					{
+						"name": "TokenConfiguration:TimeToLiveInMinutes",
+						"value": ""
+					},
+					{
+						"name": "NotificationSettings:EnableSendIncomingCallContext",
+						"value": "true"
+					},
+					{
+						"name": "NotificationSettings:TimeToLiveInSeconds",
+						"value": "30"
 					}
 					]
 				}
@@ -93,11 +117,36 @@
 				"allowBlobPublicAccess": false
 			},
 			"sku": {
-				"name": "[parameters('storageAccountType')]"
+				"name": "Standard_LRS"
+			}
+		},
+		{
+			"type": "Microsoft.DocumentDB/databaseAccounts",
+			"apiVersion": "2022-08-15",
+			"name": "[parameters('cosmosDbDatabaseName')]",
+			"location": "[resourceGroup().location]",
+			"tags": {				
+			},
+			"kind": "GlobalDocumentDB",
+			"properties": {
+				"enableFreeTier": "false",
+				"databaseAccountOfferType": "Standard",
+				"capabilities": [
+					{
+						"name": "EnableServerless"
+					}
+				],
+				"locations": [
+					{
+					  "locationName": "[resourceGroup().location]"
+					}
+				]
 			}
 		}
 	],
     "variables": {
-
-    }
+		"hostingPlanName": "[concat(parameters('functionAppName'),'-plan')]"
+    },
+	"outputs":{
+	}
 }
