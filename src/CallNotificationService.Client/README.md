@@ -10,7 +10,7 @@ The the Call Notification Service and Client eliminate the need to continually u
 
 The Call Notification Client communicates with CNS using an HTTP client on a configurable interval using a .NET background worker process. When an IncomingCall event is sent from ACS to your resource's Event Grid subscription, CNS will dispatch a `CallNotification` payload to the webhook your application provided. Additionally, since the act of registration also includes a `Targets` collection, your local application has full control over which identities (PSTN numbers or ACS identities) it receives notifications for.
 
-![Copy Function UR>](https://github.com/jasonshave/CallNotificationService/raw/master/images/cns-overview.png)
+![CNS Overview](https://github.com/jasonshave/CallNotificationService/raw/master/images/cns-overview.png)
 
 ## Pre-requisites
 
