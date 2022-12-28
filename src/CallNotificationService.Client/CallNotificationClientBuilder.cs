@@ -2,25 +2,42 @@
 // Copyright (c) 2022 Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CallNotificationService.Client;
 
 public class CallNotificationClientBuilder
 {
-    private readonly IServiceCollection _services;
-    private readonly CallNotificationClientSettings _settings;
+    private readonly string? _visualStudioTunnelUri;
 
-    public CallNotificationClientBuilder(IServiceCollection services, CallNotificationClientSettings settings)
+    public IServiceCollection Services { get; }
+
+    private IConfiguration Configuration { get; }
+
+    public CallNotificationClientBuilder(IConfiguration configuration, IServiceCollection services, string? visualStudioTunnelUri = null)
     {
-        _services = services;
-        _settings = settings;
+        Configuration = configuration;
+        Services = services;
+        _visualStudioTunnelUri = visualStudioTunnelUri;
     }
 
     public void Build()
     {
-        _services.AddHttpClient<CallNotificationHttpClient>();
-        _services.AddSingleton(_settings);
-        _services.AddSingleton<ICallNotificationClient, CallNotificationClient>();
+        var callNotificationClientSettings = new CallNotificationClientSettings();
+        Configuration.Bind(nameof(CallNotificationClientSettings), callNotificationClientSettings);
+        Services.AddSingleton(callNotificationClientSettings);
+
+        var callbackRegistrationSettings = new CallbackRegistrationSettings();
+        if (_visualStudioTunnelUri is not null)
+        {
+            callbackRegistrationSettings.CallbackHost = _visualStudioTunnelUri;
+        }
+
+        Configuration.Bind(nameof(CallbackRegistrationSettings), callbackRegistrationSettings);
+        Services.AddSingleton(callbackRegistrationSettings);
+
+        Services.AddHttpClient<CallNotificationHttpClient>();
+        Services.AddSingleton<ICallNotificationClient, CallNotificationClient>();
     }
 }

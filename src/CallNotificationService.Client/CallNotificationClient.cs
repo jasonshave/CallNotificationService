@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CallNotificationService.Client
 {
-    internal sealed class CallNotificationClient : ICallNotificationClient
+    public sealed class CallNotificationClient : ICallNotificationClient
     {
         private readonly CallNotificationHttpClient _client;
         private readonly CallNotificationClientSettings _callNotificationClientSettings;

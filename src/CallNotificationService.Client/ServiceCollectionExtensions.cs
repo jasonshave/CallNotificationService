@@ -4,33 +4,32 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CallNotificationService.Client;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddCallNotificationServiceClient(this IServiceCollection services,
-        Action<CallNotificationClientSettings> options)
+    public static CallNotificationClientBuilder AddCallNotificationServiceClient(this IServiceCollection services,
+        IConfiguration configuration, string? visualStudioTunnelUri = null)
     {
-        var settings = new CallNotificationClientSettings();
-        options(settings);
-        var builder = new CallNotificationClientBuilder(services, settings);
+        var builder = new CallNotificationClientBuilder(configuration, services, visualStudioTunnelUri);
+
         builder.Build();
+
+        return builder;
     }
 
-    public static void AddCallNotificationServiceClient(this IServiceCollection services,
-        CallNotificationClientSettings settings)
+    public static CallNotificationClientBuilder AddRegistrationWorker(this CallNotificationClientBuilder builder)
     {
-        var builder = new CallNotificationClientBuilder(services, settings);
-        builder.Build();
+        builder.Services.AddHostedService<RegistrationWorker>();
+        return builder;
     }
 
-    public static void AddCallNotificationServiceClient(this IServiceCollection services,
-        IConfiguration configuration)
+    public static CallNotificationClientBuilder AddRegistrationWorker<TWorker>(this CallNotificationClientBuilder builder)
+        where TWorker : BackgroundService
     {
-        var settings = new CallNotificationClientSettings();
-        configuration.Bind(nameof(CallNotificationClientSettings), settings);
-        var builder = new CallNotificationClientBuilder(services, settings);
-        builder.Build();
+        builder.Services.AddHostedService<TWorker>();
+        return builder;
     }
 }
