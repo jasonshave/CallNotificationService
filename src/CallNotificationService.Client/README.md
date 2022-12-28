@@ -23,9 +23,26 @@ After installing the NuGet package, configure your .NET User Secrets file, `apps
 
 ```json
 "CallNotificationClientSettings": {
-    "SetRegistrationEndpointUri": "[register-function-url]",
-    "DeRegisterEndpointUri": "[deregister-function-url]",
-    "GetRegistrationEndpointUri": "[getregistration-function-url]",
-    "ListRegistrationsEndpointUri": "[listregistrations-function-url]"
+    "SetRegistrationEndpointUri": "<insert-register-function-url>",
+    "DeRegisterEndpointUri": "<insert-deregister-function-url>",
+    "GetRegistrationEndpointUri": "<insert-getregistration-function-url>",
+    "ListRegistrationsEndpointUri": "<insert-listregistrations-function-url>",
+    "ApplicationId": "<insert-your-acs-id>",
+    "RegistrationLifetimeInMinutes": 60,
+    "Targets": [ "4:+18005551212", "4:+14255555000"],
+    "CallNotificationPath": "api/callNotification"
   }
 ```
+
+## CallNotificationClientSettings explained
+
+| Setting | Purpose | Example |
+| -- | -- | -- |
+| RegistrationEndpointUri | Used to set the registration for your application with CNS. | https://myfunction.azurewebsites.net |
+| DeRegisterEndpointUri | Used to deregister your application with CNS. | https://myfunction.azurewebsites.net |
+| GetRegistrationEndpointUri | Used to get the registration for your application with CNS. | https://myfunction.azurewebsites.net |
+| ListRegistrationsEndpointUri | Used to list the registrations with CNS. | https://myfunction.azurewebsites.net |
+| ApplicationId | This can be obtained using the ACS Identity blade in the Azure portal, you can use the ACS Identity SDK, or leave it blank in which the Call Notification Service will automatically generate an ID for you. | `8:acs:63454d3e-3fd6-4e9a-817b-e80314a2b271_066fa785-71dd-4201-91fd-cb4f59c9aa7f` |
+| RegistrationLifetimeInMinutes | Used by the built-in worker process to re-register on this interval | `60` |
+| Targets | A `List<string>` containing the ACS `rawId` the Call Notification Service should send you notifications for. This can be a number or an ACS identity, similar to the application ID mentioned above. | `{ "4:+18005551212", "4:+18669876543", configuration["ACS:ApplicationId"] }`
+| CallNotificationPath | The path used to receive the `CallNotification` payload. | `api/CallNotification` |

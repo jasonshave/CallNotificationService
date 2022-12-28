@@ -53,7 +53,7 @@ namespace CallNotificationService.Client
                 Targets = request.Targets
             };
 
-            var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));
+            var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.RegistrationEndpointUri));
 
             _logger.LogInformation($"Registered WebHook callback {registration.CallNotificationUri} using application {registration.ApplicationId} which expires on {registration.ExpiresOn.ToLocalTime()}.");
 

@@ -18,7 +18,7 @@ public sealed class CallNotificationClientSettings
 
     public string MidCallEventsPath { get; set; } = string.Empty;
 
-    public string SetRegistrationEndpointUri { get; set; } = string.Empty;
+    public string RegistrationEndpointUri { get; set; } = string.Empty;
 
     public string DeRegisterEndpointUri { get; set; } = string.Empty;
 
