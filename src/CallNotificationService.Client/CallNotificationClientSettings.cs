@@ -6,6 +6,18 @@ namespace CallNotificationService.Client;
 
 public sealed class CallNotificationClientSettings
 {
+    public string? ApplicationId { get; set; }
+
+    public string CallbackHost { get; set; } = string.Empty;
+
+    public double RegistrationLifetimeInMinutes { get; set; }
+
+    public List<string> Targets { get; set; } = new();
+
+    public string CallNotificationPath { get; set; } = string.Empty;
+
+    public string MidCallEventsPath { get; set; } = string.Empty;
+
     public string SetRegistrationEndpointUri { get; set; } = string.Empty;
 
     public string DeRegisterEndpointUri { get; set; } = string.Empty;

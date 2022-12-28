@@ -10,9 +10,9 @@ internal sealed class CreateRegistrationRequest
 
     public List<string> Targets { get; set; } = new();
 
-    public string CallNotificationUri { get; set; }
+    public string? CallNotificationUri { get; set; }
 
-    public string MidCallEventsUri { get; set; }
+    public string? MidCallEventsUri { get; set; }
 
     public double LifetimeInMinutes { get; set; }
 }

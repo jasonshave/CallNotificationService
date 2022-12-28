@@ -26,16 +26,19 @@ public class CallNotificationClientBuilder
     {
         var callNotificationClientSettings = new CallNotificationClientSettings();
         Configuration.Bind(nameof(CallNotificationClientSettings), callNotificationClientSettings);
-        Services.AddSingleton(callNotificationClientSettings);
 
-        var callbackRegistrationSettings = new CallbackRegistrationSettings();
         if (_visualStudioTunnelUri is not null)
         {
-            callbackRegistrationSettings.CallbackHost = _visualStudioTunnelUri;
+            callNotificationClientSettings.CallbackHost = _visualStudioTunnelUri;
         }
 
-        Configuration.Bind(nameof(CallbackRegistrationSettings), callbackRegistrationSettings);
-        Services.AddSingleton(callbackRegistrationSettings);
+        if (string.IsNullOrEmpty(callNotificationClientSettings.CallbackHost))
+        {
+            throw new ApplicationException(
+                "Could not determine the callback host URI. Please make sure this has been set according to the documentation: https://www.nuget.org/packages/CallNotificationService.Client/");
+        }
+
+        Services.AddSingleton(callNotificationClientSettings);
 
         Services.AddHttpClient<CallNotificationHttpClient>();
         Services.AddSingleton<ICallNotificationClient, CallNotificationClient>();

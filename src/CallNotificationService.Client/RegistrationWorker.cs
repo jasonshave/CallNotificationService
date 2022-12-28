@@ -11,13 +11,13 @@ namespace CallNotificationService.Client;
 public class RegistrationWorker : BackgroundService
 {
     private readonly ICallNotificationClient _client;
-    private readonly CallbackRegistrationSettings _settings;
+    private readonly CallNotificationClientSettings _settings;
 
     private CallbackRegistration? _registration;
 
     public RegistrationWorker(
         ICallNotificationClient client,
-        CallbackRegistrationSettings settings)
+        CallNotificationClientSettings settings)
     {
         _client = client;
         _settings = settings;
@@ -36,7 +36,7 @@ public class RegistrationWorker : BackgroundService
             _registration = await _client.SetRegistrationAsync(_settings);
             _settings.ApplicationId ??= _registration.ApplicationId;
 
-            await Task.Delay(TimeSpan.FromMinutes(_settings.LifetimeInMinutes / 1.2), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(_settings.RegistrationLifetimeInMinutes / 1.2), stoppingToken);
             await DeRegister();
         }
     }
