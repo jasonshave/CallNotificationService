@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CallNotificationService.Client
 {
-    internal sealed class CallNotificationClient : ICallNotificationClient
+    public sealed class CallNotificationClient : ICallNotificationClient
     {
         private readonly CallNotificationHttpClient _client;
         private readonly CallNotificationClientSettings _callNotificationClientSettings;
@@ -23,37 +23,37 @@ namespace CallNotificationService.Client
         }
 
         /// <summary>
-        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallbackRegistrationSettings"/>
+        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallNotificationClientSettings"/>
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistrationAsync(Action<CallbackRegistrationSettings> options)
+        public async Task<CallbackRegistration?> SetRegistrationAsync(Action<CallNotificationClientSettings> options)
         {
-            var request = new CallbackRegistrationSettings();
+            var request = new CallNotificationClientSettings();
             options(request);
 
             return await SetRegistrationAsync(request);
         }
 
         /// <summary>
-        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallbackRegistrationSettings"/>
+        /// Creates or updates/refreshes an existing registration using the parameters specified in <see cref="CallNotificationClientSettings"/>
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<CallbackRegistration?> SetRegistrationAsync(CallbackRegistrationSettings request)
+        public async Task<CallbackRegistration?> SetRegistrationAsync(CallNotificationClientSettings request)
         {
             var createRegistrationRequest = new CreateRegistrationRequest()
             {
                 ApplicationId = request.ApplicationId,
                 CallNotificationUri = request.CallbackHost + request.CallNotificationPath,
                 MidCallEventsUri = request.CallbackHost + request.MidCallEventsPath,
-                LifetimeInMinutes = request.LifetimeInMinutes,
+                LifetimeInMinutes = request.RegistrationLifetimeInMinutes,
                 Targets = request.Targets
             };
 
-            var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.SetRegistrationEndpointUri));
+            var registration = await _client.Post<CreateRegistrationRequest, CallbackRegistration>(createRegistrationRequest, new Uri(_callNotificationClientSettings.RegistrationEndpointUri));
 
             _logger.LogInformation($"Registered WebHook callback {registration.CallNotificationUri} using application {registration.ApplicationId} which expires on {registration.ExpiresOn.ToLocalTime()}.");
 
