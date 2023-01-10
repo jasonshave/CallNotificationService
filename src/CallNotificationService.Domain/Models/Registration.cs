@@ -6,21 +6,21 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 namespace CallNotificationService.Domain.Models;
 
-public sealed class Registration : IRegistration, IEntity
+public sealed class Registration : IEntity
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     public string ResourceId => "ACS";
 
-    public string ApplicationId { get; set; }
+    public string ApplicationId { get; set; } = string.Empty;
 
-    public string[] Targets { get; set; }
+    public string[] Targets { get; set; } = Array.Empty<string>();
 
-    public string CallNotificationUri { get; set; }
+    public string CallNotificationUri { get; set; } = string.Empty;
 
-    public string MidCallEventsUri { get; set; }
+    public string? MidCallEventsUri { get; set; }
 
-    public double LifetimeInMinutes { get; set; }
+    public double LifetimeInMinutes { get; set; } = 60;
 
     public DateTimeOffset UpdatedOn { get; set; }
 

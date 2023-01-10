@@ -2,9 +2,7 @@
 // Copyright (c) 2022 Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace CallNotificationService.Client;
 

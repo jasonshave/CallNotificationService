@@ -33,7 +33,7 @@ internal sealed class WebhookCallbackSender : ISender<Notification>
 
     public async Task SendAsync(Notification notification, Uri callbackUri, Uri midCallEventsUri)
     {
-        var payload = new CallNotification
+        var callNotification = new CallNotification
         {
             Id = notification.Id,
             To = notification.To,
@@ -45,12 +45,13 @@ internal sealed class WebhookCallbackSender : ISender<Notification>
         };
 
         if (_notificationSettings.CurrentValue.EnableSendIncomingCallContext)
-            payload.IncomingCallContext = notification.IncomingCallContext;
+            callNotification.IncomingCallContext = notification.IncomingCallContext;
 
         var token = _tokenService.GenerateToken(notification.ApplicationId);
-        _callbackClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        if (token is not null)
+            _callbackClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         _logger.LogInformation("Sending notification payload to {callbackUri}", callbackUri);
-        await _callbackClient.HttpClient.PostAsJsonAsync(callbackUri, payload);
+        await _callbackClient.HttpClient.PostAsJsonAsync(callbackUri, callNotification);
     }
 }

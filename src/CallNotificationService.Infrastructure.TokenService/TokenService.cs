@@ -24,8 +24,10 @@ namespace CallNotificationService.Infrastructure.TokenService
             _tokenConfiguration = tokenConfiguration.Value;
         }
 
-        public string GenerateToken(string applicationId)
+        public string? GenerateToken(string applicationId)
         {
+            if (!_tokenConfiguration.Enabled) return null;
+
             _logger.LogInformation("Generating token for {applicationId}", applicationId);
             return new JwtBuilder()
                 .WithAlgorithm(new HMACSHA256Algorithm())
