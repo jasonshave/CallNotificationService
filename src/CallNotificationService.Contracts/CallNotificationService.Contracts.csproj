@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.4.0" />
+  </ItemGroup>
+
 </Project>
