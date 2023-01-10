@@ -85,7 +85,7 @@
 					},
 										{
 						"name": "TokenConfiguration:Enabled",
-						"value": "False"
+						"value": "false"
 					},
 					{
 						"name": "TokenConfiguration:Issuer",
