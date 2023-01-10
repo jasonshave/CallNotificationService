@@ -102,15 +102,10 @@ public class RegistrationFunctions
     }
 
     [Function("ListRegistrations")]
-    public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data, string? applicationId)
+    public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data)
     {
-        List<CallbackRegistration> registrations = new();
         var results = await _registrationService.ListRegistrations("ACS");
-        foreach (var result in results)
-        {
-            var response = _mapper.Map<CallbackRegistration>(result);
-            registrations.Add(response);
-        }
+        List<CallbackRegistration> registrations = results.Select(result => _mapper.Map<CallbackRegistration>(result)).ToList();
 
         var httpResponse = data.CreateResponse(HttpStatusCode.OK);
         await httpResponse.WriteAsJsonAsync(registrations);
