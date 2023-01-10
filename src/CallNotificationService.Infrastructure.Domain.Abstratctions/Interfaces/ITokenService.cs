@@ -6,5 +6,5 @@ namespace CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 
 public interface ITokenService
 {
-    string GenerateToken(string applicationId);
+    string? GenerateToken(string applicationId);
 }
