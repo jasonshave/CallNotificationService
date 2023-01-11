@@ -4,7 +4,7 @@
 
 This library contains the deployable Call Notification Service (CNS) and a client library which can manage webhook callback registrations and dispatch inbound call notifications from the Azure Communication Services (ACS) Call Automation platform. CNS builds on how the Call Automation platform sends inbound call notifications to Event Grid by allowing dynamic registration of your webhook endpoint and the phone numbers or ACS endpoints at runtime.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjasonshave%2FCallNotificationService%2Fjasonshave%2Fpackage-updates%2Fdeployment%2Fdeploy-to-azure-bicep.bicep%3Ftoken%3DGHSAT0AAAAAAB27NMTHVT2LE6LEJYW7JGMMY3QJ2QA)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjasonshave%2FCallNotificationService%2Fmaster%2Fdeployment%2Fdeploy-to-azure.json%3Ftoken%3DGHSAT0AAAAAAB27NMTHVT2LE6LEJYW7JGMMY3QJ2QA)
 
 ## Features and benefits
 
