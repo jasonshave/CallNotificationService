@@ -10,7 +10,13 @@
 		},
 		"cosmosDbDatabaseName": {
 			"type": "string"
-		}
+		},
+		"packageUri": {
+      		"type": "string",
+      		"metadata": {
+        		"description": "The zip content url."
+      		}
+    	}
     },
 	"resources": [
 		{
@@ -55,6 +61,10 @@
 						"name": "WEBSITE_CONTENTSHARE",
 						"value": "[toLower(parameters('functionAppName'))]"
 					},
+					{
+						"name": "WEBSITE_RUN_FROM_PACKAGE",
+						"value": ""
+					}
 					{
 						"name": "FUNCTIONS_EXTENSION_VERSION",
 						"value": "~4"
@@ -119,6 +129,17 @@
 			"sku": {
 				"name": "Standard_LRS"
 			}
+		},
+		{
+      		"type": "Microsoft.Web/sites/extensions",
+			"apiVersion": "2022-03-01",
+			"name": "[format('{0}/{1}', parameters('functionAppName'), 'zipdeploy')]",
+			"properties": {
+				"packageUri": "[parameters('packageUri')]"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+			]
 		},
 		{
 			"type": "Microsoft.DocumentDB/databaseAccounts",
