@@ -63,7 +63,7 @@
 					},
 					{
 						"name": "WEBSITE_RUN_FROM_PACKAGE",
-						"value": ""
+						"value": "https://github.com/jasonshave/CallNotificationService/blob/jasonshave/package-updates/deployment/files/callnotificationservice.zip?raw=true"
 					}
 					{
 						"name": "FUNCTIONS_EXTENSION_VERSION",
