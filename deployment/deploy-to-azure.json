@@ -87,7 +87,7 @@
 					},
 					{
 						"name": "CosmosDbConfiguration:Database:Tables",
-						"value": "{ \"CallbackRegistrations\": -1, \"CallNotifications\": 35 }"
+						"value": "{ 'CallbackRegistrations': -1, 'CallNotifications': 35 }"
 					},
 					{
 						"name": "TokenConfiguration:Enabled",
