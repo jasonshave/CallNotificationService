@@ -25,7 +25,7 @@ using Microsoft.Azure.Functions.Worker;
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(builder =>
     {
-        builder.AddApplicationInsights().AddApplicationInsights();
+        builder.AddApplicationInsights().AddApplicationInsightsLogger();
     })
     .ConfigureAppConfiguration(configuration =>
     {

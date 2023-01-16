@@ -43,8 +43,7 @@ public sealed class CosmosDbProvisioner : IStorageProvisioner
         var results = await Task.WhenAll(tasks);
         results.ToList().ForEach(container =>
         {
-            _logger.LogInformation("Create container status code: {statusCode} | ID: {id}", container.StatusCode,
-                container.Container.Id);
+            _logger.LogInformation("Create container status code: {statusCode} | ID: {id}", container.StatusCode, container.Container.Id);
         });
     }
 }
