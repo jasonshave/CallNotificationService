@@ -6,6 +6,7 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.ComponentModel;
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
@@ -36,14 +37,17 @@ public sealed class CosmosDbProvisioner : IStorageProvisioner
         var tasks = new List<Task<ContainerResponse>>();
         foreach (var table in _configuration.Value.Tables)
         {
-            ContainerProperties props = new(table.Key, @"/ResourceId");
-            tasks.Add(_db.CreateContainerIfNotExistsAsync(props));
+            try
+            {
+                ContainerProperties props = new(table.Key, @"/ResourceId");
+                ContainerResponse containerResponse = await _db.CreateContainerIfNotExistsAsync(props);
+                _logger.LogInformation("Create container in {database} status code: {statusCode} | ID: {id}", databaseResponse.Database.Id, containerResponse.StatusCode, containerResponse.Container.Id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message, e);
+                throw;
+            }
         }
-
-        var results = await Task.WhenAll(tasks);
-        results.ToList().ForEach(container =>
-        {
-            _logger.LogInformation("Create container status code: {statusCode} | ID: {id}", container.StatusCode, container.Container.Id);
-        });
     }
 }
