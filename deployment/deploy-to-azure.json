@@ -91,10 +91,14 @@
 					{
 						"name": "CosmosDbConfiguration:Database",
 						"value": "[parameters('cosmosDbDatabaseName')]"
+					},					
+					{
+						"name": "CosmosDbConfiguration:Tables:CallbackRegistrations",
+						"value": "-1"
 					},
 					{
-						"name": "CosmosDbConfiguration:Database:Tables",
-						"value": "{ 'CallbackRegistrations': -1, 'CallNotifications': 35 }"
+						"name": "CosmosDbConfiguration:Tables:CallNotifications",
+						"value": "35"
 					},
 					{
 						"name": "TokenConfiguration:Enabled",

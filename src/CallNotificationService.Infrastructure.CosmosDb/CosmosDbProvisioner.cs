@@ -39,7 +39,10 @@ public sealed class CosmosDbProvisioner : IStorageProvisioner
         {
             try
             {
-                ContainerProperties props = new(table.Key, @"/ResourceId");
+                ContainerProperties props = new(table.Key, @"/ResourceId")
+                {
+                    DefaultTimeToLive = table.Value
+                };
                 ContainerResponse containerResponse = await _db.CreateContainerIfNotExistsAsync(props);
                 _logger.LogInformation("Create container in {database} status code: {statusCode} | ID: {id}", databaseResponse.Database.Id, containerResponse.StatusCode, containerResponse.Container.Id);
             }
