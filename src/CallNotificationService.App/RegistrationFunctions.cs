@@ -104,7 +104,7 @@ public class RegistrationFunctions
     [Function("ListRegistrations")]
     public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data)
     {
-        _logger.LogDebug("Received request to list registrations.");
+        _logger.LogInformation("Received request to list registrations.");
         var results = await _registrationService.ListRegistrations("ACS");
         List<CallbackRegistration> registrations = results.Select(result => _mapper.Map<CallbackRegistration>(result)).ToList();
 

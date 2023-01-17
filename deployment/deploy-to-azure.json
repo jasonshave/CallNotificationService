@@ -10,6 +10,9 @@
 		},
 		"cosmosDbDatabaseName": {
 			"type": "string"
+		},
+		"azureCommunicationServicesConnectionString": {
+			"type": "secureString"
 		}
     },
 	"resources": [
@@ -50,6 +53,10 @@
 						"value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
             		},
 					{
+						"name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+						"value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]"
+					},
+					{
 						"name": "AzureWebJobsStorage",
 						"value": "[format('DefaultEndpointsProtocol=https;AccountName={0};EndpointSuffix={1};AccountKey={2}', parameters('storageAccountName'), environment().suffixes.storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-09-01').keys[0].value)]"
 					},
@@ -75,7 +82,7 @@
 					},
 					{
 						"name": "ACS:ConnectionString",
-						"value": ""
+						"value": "[parameters('azureCommunicationServicesConnectionString')]"
 					},
 					{
 						"name": "CosmosDbConfiguration:ConnectionString",
@@ -144,17 +151,6 @@
 			}
 		},
 		{
-      		"type": "Microsoft.Web/sites/extensions",
-			"apiVersion": "2022-03-01",
-			"name": "[format('{0}/{1}', parameters('functionAppName'), 'zipdeploy')]",
-			"properties": {
-				"packageUri": "[variables('packageLocation')]"
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-			]
-		},
-		{
 			"type": "Microsoft.DocumentDB/databaseAccounts",
 			"apiVersion": "2022-08-15",
 			"name": "[parameters('cosmosDbDatabaseName')]",
@@ -163,7 +159,7 @@
 			},
 			"kind": "GlobalDocumentDB",
 			"properties": {
-				"enableFreeTier": "false",
+				"enableFreeTier": false,
 				"databaseAccountOfferType": "Standard",
 				"capabilities": [
 					{

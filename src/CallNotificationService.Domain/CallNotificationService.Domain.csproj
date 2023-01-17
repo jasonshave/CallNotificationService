@@ -25,6 +25,8 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="CallNotificationService.App" />
+		<InternalsVisibleTo Include="CallNotificationService.Api" />
+		<InternalsVisibleTo Include="CallNotificationService.Host" />
 		<InternalsVisibleTo Include="CallNotificationService.UnitTests" />
 	</ItemGroup>
 	<ItemGroup>

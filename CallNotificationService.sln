@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Infrastructure.TokenService", "src\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj", "{F1D9E7C9-C2F3-4AE5-A66E-42D3B3374BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallNotificationService.Client", "src\CallNotificationService.Client\CallNotificationService.Client.csproj", "{ECF4B61A-DF5D-4415-934F-9A199F6F0BB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallNotificationService.Client", "src\CallNotificationService.Client\CallNotificationService.Client.csproj", "{ECF4B61A-DF5D-4415-934F-9A199F6F0BB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

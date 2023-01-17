@@ -1,47 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-    <OutputType>Exe</OutputType>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>96a7f503-bf39-4888-8875-f4b059817d11</UserSecretsId>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Azure.Communication.CallAutomation" Version="1.0.0-beta.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0-preview3" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="3.2.1" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj" />
-    <ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.4.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>96a7f503-bf39-4888-8875-f4b059817d11</UserSecretsId>
+		<ApplicationInsightsResourceId></ApplicationInsightsResourceId>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
+		<PackageReference Include="Azure.Communication.CallAutomation" Version="1.0.0-beta.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="3.2.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.2" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CallNotificationService.Contracts\CallNotificationService.Contracts.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Infrastructure.AcsIdentity\CallNotificationService.Infrastructure.AcsIdentity.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Infrastructure.CosmosDb\CallNotificationService.Infrastructure.CosmosDb.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Infrastructure.TokenService\CallNotificationService.Infrastructure.TokenService.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Infrastructure.WebhookSender\CallNotificationService.Infrastructure.WebhookSender.csproj" />
+		<ProjectReference Include="..\CallNotificationService.Persistence\CallNotificationService.Persistence.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="local.settings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Update="Microsoft.CodeAnalysis.CSharp.Features" Version="4.4.0" />
+	</ItemGroup>
 </Project>
