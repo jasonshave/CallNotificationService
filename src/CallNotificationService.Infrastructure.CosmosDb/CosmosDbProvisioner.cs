@@ -34,7 +34,6 @@ public sealed class CosmosDbProvisioner : IStorageProvisioner
         DatabaseResponse databaseResponse = await _cosmosClient.CreateDatabaseIfNotExistsAsync(_configuration.Value.Database).ConfigureAwait(false);
         _logger.LogInformation("Create database status code: {statusCode} | ID: {id}", databaseResponse.StatusCode, databaseResponse.Database.Id);
 
-        var tasks = new List<Task<ContainerResponse>>();
         foreach (var table in _configuration.Value.Tables)
         {
             try
