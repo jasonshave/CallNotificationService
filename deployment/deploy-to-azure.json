@@ -182,6 +182,6 @@
 		"hostingPlanName": "[concat(parameters('functionAppName'),'-plan')]",
 		"applicationInsightsName": "[concat(parameters('functionAppName'), '-insights')]",
 		"location": "[resourceGroup().location]",
-		"packageLocation": "https://github.com/jasonshave/CallNotificationService/blob/jasonshave/master/deployment/files/callnotificationservice.zip?raw=true"
+		"packageLocation": "https://github.com/jasonshave/CallNotificationService/blob/master/deployment/files/callnotificationservice.zip?raw=true"
     }
 }
