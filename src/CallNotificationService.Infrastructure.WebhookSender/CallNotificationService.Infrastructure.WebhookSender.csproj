@@ -12,9 +12,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="CallNotificationService.App" />
-		<InternalsVisibleTo Include="CallNotificationService.Api" />
-		<InternalsVisibleTo Include="CallNotificationService.Host" />
-	</ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CallNotificationService.Domain\CallNotificationService.Domain.csproj" />
     <ProjectReference Include="..\CallNotificationService.Infrastructure.Domain.Abstratctions\CallNotificationService.Infrastructure.Domain.Abstractions.csproj" />
