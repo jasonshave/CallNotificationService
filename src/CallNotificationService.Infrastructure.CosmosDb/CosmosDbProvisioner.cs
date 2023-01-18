@@ -4,7 +4,9 @@
 
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.ComponentModel;
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
@@ -12,30 +14,43 @@ public sealed class CosmosDbProvisioner : IStorageProvisioner
 {
     private readonly IOptions<CosmosDbConfiguration> _configuration;
     private readonly Database _db;
+    private readonly ILogger<CosmosDbProvisioner> _logger;
     private readonly CosmosClient _cosmosClient;
 
-    public CosmosDbProvisioner(IOptions<CosmosDbConfiguration> configuration, Database db)
+    public CosmosDbProvisioner(
+        IOptions<CosmosDbConfiguration> configuration,
+        Database db,
+        ILogger<CosmosDbProvisioner> logger)
     {
         _configuration = configuration;
         _db = db;
+        _logger = logger;
         _cosmosClient = new CosmosClient(_configuration.Value.ConnectionString);
     }
 
     public async Task ProvisionAsync()
     {
         // provision database
-        await _cosmosClient.CreateDatabaseIfNotExistsAsync(_configuration.Value.Database).ConfigureAwait(false);
+        DatabaseResponse databaseResponse = await _cosmosClient.CreateDatabaseIfNotExistsAsync(_configuration.Value.Database).ConfigureAwait(false);
+        _logger.LogInformation("Create database status code: {statusCode} | ID: {id}", databaseResponse.StatusCode, databaseResponse.Database.Id);
 
-        var tasks = new List<Task>();
+        _logger.LogInformation("Found {numContainers} containers to provision.", _configuration.Value.Tables.Count);
         foreach (var table in _configuration.Value.Tables)
         {
-            ContainerProperties props = new(table.Key, @"/ResourceId")
+            try
             {
-                DefaultTimeToLive = table.Value
-            };
-            tasks.Add(_db.CreateContainerIfNotExistsAsync(props));
+                ContainerProperties props = new(table.Key, @"/ResourceId")
+                {
+                    DefaultTimeToLive = table.Value
+                };
+                ContainerResponse containerResponse = await _db.CreateContainerIfNotExistsAsync(props);
+                _logger.LogInformation("Create container in {database} status code: {statusCode} | ID: {id}", databaseResponse.Database.Id, containerResponse.StatusCode, containerResponse.Container.Id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message, e);
+                throw;
+            }
         }
-
-        await Task.WhenAll(tasks).ConfigureAwait(false);
     }
 }

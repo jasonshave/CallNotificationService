@@ -18,11 +18,20 @@ using CallNotificationService.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Polly;
 using System.Reflection;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
+    .ConfigureLogging((context, logger) =>
+    {
+        logger.ClearProviders();
+        logger.AddApplicationInsights(
+            configureTelemetryConfiguration: (config) =>
+                config.ConnectionString = context.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
+            configureApplicationInsightsLoggerOptions: (options) => { });
+    })
     .ConfigureAppConfiguration(configuration =>
     {
         configuration.AddUserSecrets(Assembly.GetExecutingAssembly());

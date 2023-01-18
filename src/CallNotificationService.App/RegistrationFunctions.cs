@@ -33,12 +33,12 @@ public class RegistrationFunctions
         IApplicationIdentityService applicationIdentityService,
         IRegistrationService registrationService,
         IMapper mapper,
-        ILoggerFactory loggerFactory)
+        ILogger<RegistrationFunctions> logger)
     {
         _applicationIdentityService = applicationIdentityService;
         _registrationService = registrationService;
         _mapper = mapper;
-        _logger = loggerFactory.CreateLogger<RegistrationFunctions>();
+        _logger = logger;
     }
 
     [Function("Register")]
@@ -104,6 +104,7 @@ public class RegistrationFunctions
     [Function("ListRegistrations")]
     public async Task<HttpResponseData> ListRegistrations([HttpTrigger(AuthorizationLevel.Function, "get", Route = "registration")] HttpRequestData data)
     {
+        _logger.LogInformation("Received request to list registrations.");
         var results = await _registrationService.ListRegistrations("ACS");
         List<CallbackRegistration> registrations = results.Select(result => _mapper.Map<CallbackRegistration>(result)).ToList();
 

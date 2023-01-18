@@ -10,7 +10,7 @@ public sealed class CallNotificationClientSettings
 
     public string CallbackHost { get; set; } = string.Empty;
 
-    public double RegistrationLifetimeInMinutes { get; set; }
+    public double RegistrationLifetimeInMinutes { get; set; } = 60;
 
     public List<string> Targets { get; set; } = new();
 

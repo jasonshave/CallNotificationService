@@ -3,6 +3,7 @@
 // Licensed under the MIT License.
 
 using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,16 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(db);
 
         return services;
+    }
+
+    public static IApplicationBuilder UseCosmosDb(this IApplicationBuilder builder)
+    {
+        var provisioner = builder.ApplicationServices.GetService<IStorageProvisioner>();
+
+        if (provisioner is null) throw new ArgumentNullException($"Unable to locate {nameof(IStorageProvisioner)}");
+        provisioner.ProvisionAsync().Wait();
+
+        return builder;
     }
 
     public static IServiceProvider UseCosmosDb(this IServiceProvider services)

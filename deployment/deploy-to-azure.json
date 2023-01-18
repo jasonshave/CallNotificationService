@@ -10,6 +10,9 @@
 		},
 		"cosmosDbDatabaseName": {
 			"type": "string"
+		},
+		"azureCommunicationServicesConnectionString": {
+			"type": "secureString"
 		}
     },
 	"resources": [
@@ -17,13 +20,13 @@
 			"type": "Microsoft.Web/serverfarms",
 			"apiVersion": "2022-03-01",
 			"name": "[variables('hostingPlanName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[variables('location')]",
 			"sku": {
-			"name": "Y1",
-			"tier": "Dynamic",
-			"size": "Y1",
-			"family": "Y",
-			"capacity": 0
+				"name": "Y1",
+				"tier": "Dynamic",
+				"size": "Y1",
+				"family": "Y",
+				"capacity": 0
 			},
 			"properties": {
 				"computeMode": "Dynamic"
@@ -33,16 +36,26 @@
 			"type": "Microsoft.Web/sites",
 			"apiVersion": "2022-03-01",
 			"name": "[parameters('functionAppName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[variables('location')]",
 			"kind": "functionapp",
 			"dependsOn": [
 				"[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-				"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+				"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+				"[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+				"[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosDbDatabaseName'))]"
 			],
 			"properties": {
 				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
 				"siteConfig": {
 					"appSettings": [
+					{
+						"name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+						"value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
+            		},
+					{
+						"name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+						"value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]"
+					},
 					{
 						"name": "AzureWebJobsStorage",
 						"value": "[format('DefaultEndpointsProtocol=https;AccountName={0};EndpointSuffix={1};AccountKey={2}', parameters('storageAccountName'), environment().suffixes.storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-09-01').keys[0].value)]"
@@ -56,32 +69,40 @@
 						"value": "[toLower(parameters('functionAppName'))]"
 					},
 					{
+						"name": "WEBSITE_RUN_FROM_PACKAGE",
+						"value": "[variables('packageLocation')]"
+					},
+					{
 						"name": "FUNCTIONS_EXTENSION_VERSION",
 						"value": "~4"
 					},
 					{
 						"name": "FUNCTIONS_WORKER_RUNTIME",
-						"value": "node"
-					},
-					{
-						"name": "WEBSITE_NODE_DEFAULT_VERSION",
-						"value": "~14"
+						"value": "dotnet-isolated"
 					},
 					{
 						"name": "ACS:ConnectionString",
-						"value": ""
+						"value": "[parameters('azureCommunicationServicesConnectionString')]"
 					},
 					{
 						"name": "CosmosDbConfiguration:ConnectionString",
-						"value": ""
+						"value": "[first(listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosDbDatabaseName')), '2022-08-15').connectionStrings).ConnectionString]"
 					},
 					{
 						"name": "CosmosDbConfiguration:Database",
 						"value": "[parameters('cosmosDbDatabaseName')]"
+					},					
+					{
+						"name": "CosmosDbConfiguration:Tables:CallbackRegistrations",
+						"value": "-1"
 					},
 					{
-						"name": "CosmosDbConfiguration:Database:Tables",
-						"value": "{ \"CallbackRegistrations\": -1, \"CallNotifications\": 35 }"
+						"name": "CosmosDbConfiguration:Tables:CallNotifications",
+						"value": "35"
+					},
+					{
+						"name": "TokenConfiguration:Enabled",
+						"value": "false"
 					},
 										{
 						"name": "TokenConfiguration:Enabled",
@@ -97,7 +118,7 @@
 					},
 					{
 						"name": "TokenConfiguration:TimeToLiveInMinutes",
-						"value": ""
+						"value": "480"
 					},
 					{
 						"name": "NotificationSettings:EnableSendIncomingCallContext",
@@ -112,10 +133,23 @@
 			}
 		},
 		{
+			"type": "Microsoft.Insights/components",
+			"apiVersion": "2020-02-02",
+			"name": "[variables('applicationInsightsName')]",
+			"location": "[variables('location')]",
+			"tags": {
+				"[format('hidden-link:{0}', resourceId('Microsoft.Web/sites', variables('applicationInsightsName')))]": "Resource"
+			},
+			"properties": {
+				"Application_Type": "web"
+			},
+			"kind": "web"
+		},
+		{
 			"type": "Microsoft.Storage/storageAccounts",
 			"apiVersion": "2021-09-01",
 			"name": "[parameters('storageAccountName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[variables('location')]",
 			"kind": "StorageV2",
 			"properties": {
 				"allowBlobPublicAccess": false
@@ -128,12 +162,12 @@
 			"type": "Microsoft.DocumentDB/databaseAccounts",
 			"apiVersion": "2022-08-15",
 			"name": "[parameters('cosmosDbDatabaseName')]",
-			"location": "[resourceGroup().location]",
+			"location": "[variables('location')]",
 			"tags": {				
 			},
 			"kind": "GlobalDocumentDB",
 			"properties": {
-				"enableFreeTier": "false",
+				"enableFreeTier": false,
 				"databaseAccountOfferType": "Standard",
 				"capabilities": [
 					{
@@ -142,15 +176,16 @@
 				],
 				"locations": [
 					{
-					  "locationName": "[resourceGroup().location]"
+					  "locationName": "[variables('location')]"
 					}
 				]
 			}
 		}
 	],
     "variables": {
-		"hostingPlanName": "[concat(parameters('functionAppName'),'-plan')]"
-    },
-	"outputs":{
-	}
+		"hostingPlanName": "[concat(parameters('functionAppName'),'-plan')]",
+		"applicationInsightsName": "[concat(parameters('functionAppName'), '-insights')]",
+		"location": "[resourceGroup().location]",
+		"packageLocation": "https://github.com/jasonshave/CallNotificationService/blob/jasonshave/master/deployment/files/callnotificationservice.zip?raw=true"
+    }
 }
