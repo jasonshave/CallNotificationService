@@ -6,7 +6,6 @@ using CallNotificationService.Infrastructure.Domain.Abstractions.Interfaces;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.ComponentModel;
 
 namespace CallNotificationService.Infrastructure.CosmosDb;
 
