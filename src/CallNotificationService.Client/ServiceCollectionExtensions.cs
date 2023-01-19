@@ -20,16 +20,14 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
-    public static CallNotificationClientBuilder AddRegistrationWorker(this CallNotificationClientBuilder builder)
+    public static void AddRegistrationWorker(this CallNotificationClientBuilder builder)
     {
         builder.Services.AddHostedService<RegistrationWorker>();
-        return builder;
     }
 
-    public static CallNotificationClientBuilder AddRegistrationWorker<TWorker>(this CallNotificationClientBuilder builder)
+    public static void AddRegistrationWorker<TWorker>(this CallNotificationClientBuilder builder)
         where TWorker : BackgroundService
     {
         builder.Services.AddHostedService<TWorker>();
-        return builder;
     }
 }
